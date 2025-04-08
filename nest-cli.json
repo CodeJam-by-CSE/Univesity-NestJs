@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/cse40/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/cse40/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/cse40",
+  "projects": {
+    "cse40": {
+      "type": "application",
+      "root": "apps/cse40",
+      "entryFile": "main",
+      "sourceRoot": "apps/cse40/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cse40/tsconfig.app.json"
+      }
+    },
+    "edge-detection": {
+      "type": "application",
+      "root": "apps/edge-detection",
+      "entryFile": "main",
+      "sourceRoot": "apps/edge-detection/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/edge-detection/tsconfig.app.json"
+      }
+    }
   }
 }
