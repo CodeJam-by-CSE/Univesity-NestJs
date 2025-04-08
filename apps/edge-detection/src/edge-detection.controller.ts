@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { EdgeDetectionService } from './edge-detection.service';
+import { EventPattern } from '@nestjs/microservices';
 
 @Controller()
 export class EdgeDetectionController {
-  constructor(private readonly edgeDetectionService: EdgeDetectionService) {}
+  constructor(private readonly edgeDetectionService: EdgeDetectionService) { }
 
-  @Get()
-  getHello(): string {
-    return this.edgeDetectionService.getHello();
+  @EventPattern('detect_edge')
+  async handleDetectEdge(imageBase64: string) {
+    console.log('Received image for edge detection');
+    return await this.edgeDetectionService.detectEdge(imageBase64);
   }
+
 }

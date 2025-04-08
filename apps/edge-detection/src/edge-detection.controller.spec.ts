@@ -13,10 +13,4 @@ describe('EdgeDetectionController', () => {
 
     edgeDetectionController = app.get<EdgeDetectionController>(EdgeDetectionController);
   });
-
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(edgeDetectionController.getHello()).toBe('Hello World!');
-    });
-  });
 });

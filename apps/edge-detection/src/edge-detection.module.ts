@@ -7,4 +7,4 @@ import { EdgeDetectionService } from './edge-detection.service';
   controllers: [EdgeDetectionController],
   providers: [EdgeDetectionService],
 })
-export class EdgeDetectionModule {}
+export class EdgeDetectionModule { }

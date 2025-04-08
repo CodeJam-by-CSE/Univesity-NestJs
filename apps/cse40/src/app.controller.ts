@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('images')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly mainService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('detect-edge')
+  async detectEdge(@Body() body: { imageBase64: string }) {
+    return this.mainService.sendToEdgeService(body.imageBase64);
   }
 }
+
