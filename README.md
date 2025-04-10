@@ -34,8 +34,11 @@ $ npm install
 ## Compile and run the project
 
 ```bash
-# development
-$ npm run start
+# run main service
+$ npm start cse40
+
+# run edge detection service
+$ npm start edge-detection
 
 # watch mode
 $ npm run start:dev
