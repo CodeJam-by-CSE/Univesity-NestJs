@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/cse40",
   "projects": {
+    "basic-processing": {
+      "type": "application",
+      "root": "apps/basic-processing",
+      "entryFile": "main",
+      "sourceRoot": "apps/basic-processing/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/basic-processing/tsconfig.app.json"
+      }
+    },
     "cse40": {
       "type": "application",
       "root": "apps/cse40",
@@ -26,6 +35,15 @@
       "sourceRoot": "apps/edge-detection/src",
       "compilerOptions": {
         "tsConfigPath": "apps/edge-detection/tsconfig.app.json"
+      }
+    },
+    "negative-image": {
+      "type": "application",
+      "root": "apps/negative-image",
+      "entryFile": "main",
+      "sourceRoot": "apps/negative-image/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/negative-image/tsconfig.app.json"
       }
     }
   }
