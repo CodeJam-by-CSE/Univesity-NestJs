@@ -11,8 +11,8 @@ export class AppController {
   }
 
   @Post('resize')
-  async resizeImage(@Body() body: { imageBase64: string; width: number; height: number }) {
-    return this.mainService.sendToBasicProcessingResize(body.imageBase64, body.width, body.height);
+  async resizeImage(@Body() body: { imagePath: string; width: number; height: number }) {
+    return this.mainService.sendToBasicProcessingResize(body.imagePath, body.width, body.height);
   }
 
   @Post('greyscale')
@@ -21,12 +21,12 @@ export class AppController {
   }
 
   @Post('contrast')
-  async adjustContrast(@Body() body: { imageBase64: string; factor: number }) {
-    return this.mainService.sendToBasicProcessingContrast(body.imageBase64, body.factor);
+  async adjustContrast(@Body() body: { imagePath: string; factor: number }) {
+    return this.mainService.sendToBasicProcessingContrast(body.imagePath, body.factor);
   }
 
   @Post('negative')
-  async createNegative(@Body() body: { imageBase64: string }) {
-    return this.mainService.sendToBasicProcessingNegative(body.imageBase64);
+  async createNegative(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingNegative(body.imagePath);
   }
 }

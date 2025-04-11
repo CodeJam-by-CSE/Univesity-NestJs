@@ -4,10 +4,10 @@ import * as sharp from 'sharp';
 
 @Injectable()
 export class ContrastService {
-  async adjust(data: { image: string; factor: number }) {
+  async adjust(data: { imagePath: string; factor: number }) {
     try {
-      const { image, factor } = data;
-      const imageBuffer = Buffer.from(image, 'base64');
+      const { imagePath, factor } = data;
+      const imageBuffer = Buffer.from(imagePath, 'base64');
 
       const contrastedBuffer = await sharp(imageBuffer)
         .linear(factor, -(128 * factor) + 128)

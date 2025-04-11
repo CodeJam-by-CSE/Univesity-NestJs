@@ -13,31 +13,31 @@ export class AppService {
     return this.client.send({ cmd: 'detect_edge' }, imageBase64);
   }
 
-  sendToBasicProcessingResize(imageBase64: string, width: number, height: number) {
+  sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
     return this.basicProcessingClient.send(
       { cmd: 'resize_image' }, 
-      { image: imageBase64, width, height }
+      { imagePath, width, height }
     );
   }
 
-  sendToBasicProcessingGreyscale(imageBase64: string) {
+  sendToBasicProcessingGreyscale(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'convert_greyscale' }, 
-      imageBase64
+      imagePath
     );
   }
 
-  sendToBasicProcessingContrast(imageBase64: string, factor: number) {
+  sendToBasicProcessingContrast(imagePath: string, factor: number) {
     return this.basicProcessingClient.send(
       { cmd: 'adjust_contrast' }, 
-      { image: imageBase64, factor }
+      { imagePath, factor }
     );
   }
 
-  sendToBasicProcessingNegative(imageBase64: string) {
+  sendToBasicProcessingNegative(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'create_negative' }, 
-      imageBase64
+      imagePath
     );
   }
 }

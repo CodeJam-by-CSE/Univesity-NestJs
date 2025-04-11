@@ -8,26 +8,26 @@ export class BasicProcessingController {
   constructor(private readonly basicProcessingService: BasicProcessingService) {}
 
   @EventPattern({ cmd: 'resize_image' })
-  async handleResize(data: { image: string; width: number; height: number }) {
+  async handleResize(data: { imagePath: string; width: number; height: number }) {
     console.log('Received image for resizing');
     return await this.basicProcessingService.resizeImage(data);
   }
 
   @EventPattern({ cmd: 'convert_greyscale' })
-  async handleGreyscale(image: string) {
+  async handleGreyscale(imagePath: string) {
     console.log('Received image for greyscale conversion');
-    return await this.basicProcessingService.convertToGreyscale(image);
+    return await this.basicProcessingService.convertToGreyscale(imagePath);
   }
 
   @EventPattern({ cmd: 'adjust_contrast' })
-  async handleContrast(data: { image: string; factor: number }) {
+  async handleContrast(data: { imagePath: string; factor: number }) {
     console.log('Received image for contrast adjustment');
     return await this.basicProcessingService.adjustContrast(data);
   }
 
   @EventPattern({ cmd: 'create_negative' })
-  async handleNegative(image: string) {
+  async handleNegative(imagePath: string) {
     console.log('Received image for negative creation');
-    return await this.basicProcessingService.createNegative(image);
+    return await this.basicProcessingService.createNegative(imagePath);
   }
 }

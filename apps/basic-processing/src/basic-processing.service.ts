@@ -14,19 +14,19 @@ export class BasicProcessingService {
     private readonly negativeService: NegativeService,
   ) {}
 
-  async resizeImage(data: { image: string; width: number; height: number }) {
+  async resizeImage(data: { imagePath: string; width: number; height: number }) {
     return await this.resizeService.resize(data);
   }
 
-  async convertToGreyscale(image: string) {
-    return await this.greyscaleService.convert(image);
+  async convertToGreyscale(imagePath: string) {
+    return await this.greyscaleService.convert(imagePath);
   }
 
-  async adjustContrast(data: { image: string; factor: number }) {
+  async adjustContrast(data: { imagePath: string; factor: number }) {
     return await this.contrastService.adjust(data);
   }
 
-  async createNegative(image: string) {
-    return await this.negativeService.createNegative(image);
+  async createNegative(imagePath: string) {
+    return await this.negativeService.createNegative(imagePath);
   }
 }
