@@ -6,7 +6,6 @@ import { ClientProxy } from '@nestjs/microservices';
 export class AppService {
   constructor(
     @Inject('EDGE_SERVICE') private client: ClientProxy,
-    @Inject('NEGATIVE_SERVICE') private negativeClient: ClientProxy,
     @Inject('BASIC_PROCESSING_SERVICE') private basicProcessingClient: ClientProxy,
   ) { }
 

@@ -12,14 +12,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: { host: 'localhost', port: 4001 },
       },
       {
-        name: 'NEGATIVE_SERVICE',
-        transport: Transport.TCP,
-        options: { host: 'localhost', port: 4002 },
-      },
-      {
         name: 'BASIC_PROCESSING_SERVICE',
         transport: Transport.TCP,
-        options: { host: 'localhost', port: 4003 },
+        options: { host: 'localhost', port: 4002 },
       },
     ]),
   ],
