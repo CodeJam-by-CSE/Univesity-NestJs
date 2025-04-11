@@ -43,9 +43,9 @@ export class NegativeService {
     return result;
   }
   @MessagePattern({ cmd: 'create_negative' })
-  async createNegative(filePath: string) {
+  async createNegative(imagePath: string) {
       try {
-        if (!fs.existsSync(filePath)) {
+        if (!fs.existsSync(imagePath)) {
           throw new Error('File does not exist');
         }
   
@@ -57,7 +57,7 @@ export class NegativeService {
           fs.mkdirSync(outputDir, { recursive: true });
         }
   
-        const image = sharp(filePath);
+        const image = sharp(imagePath);
         const metadata = await image.metadata();
         const { width, height } = metadata;
         const channels = 3;
