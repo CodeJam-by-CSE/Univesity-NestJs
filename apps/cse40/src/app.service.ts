@@ -46,4 +46,10 @@ export class AppService {
       imagePath
     );
   }
+  sendToBasicProcessingEmboss(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'emboss_image' }, 
+      imagePath
+    );
+  }
 }

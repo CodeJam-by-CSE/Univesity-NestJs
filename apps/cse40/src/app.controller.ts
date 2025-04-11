@@ -33,4 +33,8 @@ export class AppController {
   async sharpenImage(@Body() body: { imagePath: string }) {
     return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
   }
+  @Post('emboss')
+  async embossImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
+  }
 }
