@@ -14,7 +14,7 @@ export class EdgeDetectionService {
         throw new Error('File does not exist');
       }
 
-      const outputDir = "/home/aravinda/Aravinda's File/ACA/Z-Other/CSE40/cse40/apps/edge-detection/output_images";
+      const outputDir = "/apps/edge-detection/output_images";
       const outputFileName = 'processed_image.png';
       const outputFilePath = path.join(outputDir, outputFileName);
 

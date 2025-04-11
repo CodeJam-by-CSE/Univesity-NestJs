@@ -30,4 +30,10 @@ export class BasicProcessingController {
     console.log('Received image for negative creation');
     return await this.basicProcessingService.createNegative(imagePath);
   }
+
+  @EventPattern({ cmd: 'sharpen_image' })
+  async handleSharpen(imagePath: string) {
+    console.log('Received image for sharpening');
+    return await this.basicProcessingService.sharpenImage(imagePath);
+  }
 }

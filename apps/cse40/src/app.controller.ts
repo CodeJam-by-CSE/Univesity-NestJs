@@ -29,4 +29,8 @@ export class AppController {
   async createNegative(@Body() body: { imagePath: string }) {
     return this.mainService.sendToBasicProcessingNegative(body.imagePath);
   }
+  @Post('sharpen')
+  async sharpenImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
+  }
 }

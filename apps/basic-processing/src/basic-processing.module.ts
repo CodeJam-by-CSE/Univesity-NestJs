@@ -6,6 +6,7 @@ import { ResizeService } from './services/resize.service';
 import { GreyscaleService } from './services/greyscale.service';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
+import { SharpenService } from './services/sharpen.service'; 
 
 @Module({
   imports: [],
@@ -16,6 +17,8 @@ import { NegativeService } from './services/negative.service';
     GreyscaleService,
     ContrastService,
     NegativeService,
+    SharpenService, 
+
   ],
 })
 export class BasicProcessingModule {}

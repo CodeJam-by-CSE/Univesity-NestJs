@@ -40,4 +40,10 @@ export class AppService {
       imagePath
     );
   }
+  sendToBasicProcessingSharpen(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'sharpen_image' }, 
+      imagePath
+    );
+  }
 }
