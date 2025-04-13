@@ -4,6 +4,7 @@ import { ResizeService } from './services/resize.service';
 import { GreyscaleService } from './services/greyscale.service';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
+import { RotateService } from './services/rotate.service';
 
 @Injectable()
 export class BasicProcessingService {
@@ -12,6 +13,7 @@ export class BasicProcessingService {
     private readonly greyscaleService: GreyscaleService,
     private readonly contrastService: ContrastService,
     private readonly negativeService: NegativeService,
+    private readonly rotateService: RotateService,
   ) {}
 
   async resizeImage(data: { imagePath: string; width: number; height: number }) {
@@ -28,5 +30,9 @@ export class BasicProcessingService {
 
   async createNegative(imagePath: string) {
     return await this.negativeService.createNegative(imagePath);
+  }
+
+  async rotateImage(data: { imagePath: string; angle: number }) {
+    return await this.rotateService.rotate(data);
   }
 }

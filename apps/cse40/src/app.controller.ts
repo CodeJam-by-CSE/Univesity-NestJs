@@ -29,4 +29,9 @@ export class AppController {
   async createNegative(@Body() body: { imagePath: string }) {
     return this.mainService.sendToBasicProcessingNegative(body.imagePath);
   }
+
+  @Post('rotate')
+  async rotateImage(@Body() body: { imagePath: string; angle: number }) {
+    return this.mainService.sendToBasicProcessingRotate(body.imagePath, body.angle);
+  }
 }

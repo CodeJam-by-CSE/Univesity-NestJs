@@ -30,4 +30,10 @@ export class BasicProcessingController {
     console.log('Received image for negative creation');
     return await this.basicProcessingService.createNegative(imagePath);
   }
+
+  @EventPattern({ cmd: 'rotate_image' })
+  async handleRotate(data: { imagePath: string; angle: number }) {
+    console.log('Received image for rotation');
+    return await this.basicProcessingService.rotateImage(data);
+  }
 }

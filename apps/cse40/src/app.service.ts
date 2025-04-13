@@ -40,4 +40,11 @@ export class AppService {
       imagePath
     );
   }
+
+  sendToBasicProcessingRotate(imagePath: string, angle: number) {
+    return this.basicProcessingClient.send(
+      { cmd: 'rotate_image' },
+      { imagePath, angle }
+    );
+  }
 }
