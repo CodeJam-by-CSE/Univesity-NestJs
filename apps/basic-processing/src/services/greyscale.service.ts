@@ -1,16 +1,28 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import * as sharp from 'sharp';
 
 @Injectable()
 export class GreyscaleService {
-  async convert(image: string) {
+  convert(imageBase64: string): { success: boolean; data?: string; error?: string } {
     try {
-      const imageBuffer = Buffer.from(image, 'base64');
+      const buffer = Buffer.from(imageBase64, 'base64');
 
-      const greyscaleBuffer = await sharp(imageBuffer)
-        .greyscale()
-        .toBuffer();
+      const greyscaleBuffer = Buffer.alloc(buffer.length);
+
+      for (let i = 0; i < buffer.length; i += 4) {
+        const r = buffer[i];
+        const g = buffer[i + 1];
+        const b = buffer[i + 2];
+        const a = buffer[i + 3]; // Alpha
+
+        // Greyscale value using luminance formula
+        const grey = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+
+        greyscaleBuffer[i] = grey;
+        greyscaleBuffer[i + 1] = grey;
+        greyscaleBuffer[i + 2] = grey;
+        greyscaleBuffer[i + 3] = a; // Keep original alpha
+      }
 
       return {
         success: true,
