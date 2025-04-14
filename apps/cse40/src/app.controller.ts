@@ -5,11 +5,6 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly mainService: AppService) { }
 
-  @Post('detect-edge')
-  async detectEdge(@Body() body: { imageBase64: string }) {
-    return this.mainService.sendToEdgeService(body.imageBase64);
-  }
-
   @Post('resize')
   async resizeImage(@Body() body: { imagePath: string; width: number; height: number }) {
     return this.mainService.sendToBasicProcessingResize(body.imagePath, body.width, body.height);
