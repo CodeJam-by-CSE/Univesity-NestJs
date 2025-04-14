@@ -29,6 +29,13 @@ export class AppController {
   async createNegative(@Body() body: { imagePath: string }) {
     return this.mainService.sendToBasicProcessingNegative(body.imagePath);
   }
+  @Post('sharpen')
+  async sharpenImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
+  }
+  @Post('emboss')
+  async embossImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
 
   @Post('rotate')
   async rotateImage(@Body() body: { imagePath: string; angle: number }) {

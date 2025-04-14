@@ -6,6 +6,8 @@ import { ResizeService } from './services/resize.service';
 import { GreyscaleService } from './services/greyscale.service';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
+import { SharpenService } from './services/sharpen.service'; 
+import { EmbossService } from './services/embossing.service';
 import { RotateService } from './services/rotate.service';
 
 @Module({
@@ -17,6 +19,8 @@ import { RotateService } from './services/rotate.service';
     GreyscaleService,
     ContrastService,
     NegativeService,
+    SharpenService, 
+    EmbossService, 
     RotateService,
   ],
 })

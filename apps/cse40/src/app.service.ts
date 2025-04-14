@@ -40,6 +40,16 @@ export class AppService {
       imagePath
     );
   }
+  sendToBasicProcessingSharpen(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'sharpen_image' }, 
+      imagePath
+    );
+  }
+  sendToBasicProcessingEmboss(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'emboss_image' }, 
+      imagePath
 
   sendToBasicProcessingRotate(imagePath: string, angle: number) {
     return this.basicProcessingClient.send(
