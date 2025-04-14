@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { EdgeDetectionController } from './edge-detection.controller';
 import { EdgeDetectionService } from './edge-detection.service';

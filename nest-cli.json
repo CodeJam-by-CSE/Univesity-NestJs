@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/cse40",
   "projects": {
+    "basic-processing": {
+      "type": "application",
+      "root": "apps/basic-processing",
+      "entryFile": "main",
+      "sourceRoot": "apps/basic-processing/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/basic-processing/tsconfig.app.json"
+      }
+    },
     "cse40": {
       "type": "application",
       "root": "apps/cse40",
