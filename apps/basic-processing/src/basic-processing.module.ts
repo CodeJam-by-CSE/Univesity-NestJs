@@ -8,6 +8,7 @@ import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
 import { SharpenService } from './services/sharpen.service'; 
 import { EmbossService } from './services/embossing.service';
+import { RotateService } from './services/rotate.service';
 
 @Module({
   imports: [],
@@ -20,6 +21,7 @@ import { EmbossService } from './services/embossing.service';
     NegativeService,
     SharpenService, 
     EmbossService, 
+    RotateService,
   ],
 })
 export class BasicProcessingModule {}

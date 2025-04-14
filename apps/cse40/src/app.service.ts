@@ -50,6 +50,11 @@ export class AppService {
     return this.basicProcessingClient.send(
       { cmd: 'emboss_image' }, 
       imagePath
+
+  sendToBasicProcessingRotate(imagePath: string, angle: number) {
+    return this.basicProcessingClient.send(
+      { cmd: 'rotate_image' },
+      { imagePath, angle }
     );
   }
 }
