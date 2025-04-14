@@ -37,8 +37,8 @@ $ npm install
 # run main service
 $ npm start cse40
 
-# run edge detection service
-$ npm start edge-detection
+# run basic-processing service
+$ npm start basic-processing
 
 # watch mode
 $ npm run start:dev
