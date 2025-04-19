@@ -40,6 +40,7 @@ export class BasicProcessingService {
   }
   async embossImage(imagePath: string) {
     return await this.embossService.embossImage(imagePath);
+  }
 
   async rotateImage(data: { imagePath: string; angle: number }) {
     return await this.rotateService.rotate(data);

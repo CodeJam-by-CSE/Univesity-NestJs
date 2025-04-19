@@ -10,6 +10,12 @@ export class AppController {
     return this.mainService.sendToBasicProcessingResize(body.imagePath, body.width, body.height);
   }
 
+
+  @Post('histogram_equalization_image')
+  async histogramImageEnhancement(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToEnhancementHistogram(body.imagePath);
+  }
+
   @Post('greyscale')
   async convertGreyscale(@Body() body: { imageBase64: string }) {
     return this.mainService.sendToBasicProcessingGreyscale(body.imageBase64);

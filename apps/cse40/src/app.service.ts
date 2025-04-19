@@ -6,7 +6,20 @@ import { ClientProxy } from '@nestjs/microservices';
 export class AppService {
   constructor(
     @Inject('BASIC_PROCESSING_SERVICE') private basicProcessingClient: ClientProxy,
+    @Inject('ENHANCEMENT_SERVICE') private enhancementClient: ClientProxy,
   ) { }
+    
+
+
+
+  sendToEnhancementHistogram(imagePath: string) {
+    return this.enhancementClient.send(
+      { cmd: 'histogram_equalization_image' },
+       imagePath
+    );
+  }
+
+  
 
   sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
     return this.basicProcessingClient.send(
@@ -55,3 +68,5 @@ export class AppService {
     );
   }
 }
+
+
