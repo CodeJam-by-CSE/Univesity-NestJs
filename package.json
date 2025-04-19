@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start:enhancement": "ts-node apps/enhancement/src/main.ts", 
+    "start:basic": "ts-node apps/basic-processing/src/main.ts", 
     "start:microservice": "ts-node apps/basic-processing/src/main.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
