@@ -3,6 +3,7 @@ import * as sharp from 'sharp';
 import { MessagePattern } from '@nestjs/microservices';
 import * as fs from 'fs';
 import * as path from 'path';
+import { convertToGreyscale } from '../../../common/utils/greyscale';
 
 @Injectable()
 export class HistogramEqualizationService {
@@ -21,10 +22,7 @@ export class HistogramEqualizationService {
         fs.mkdirSync(outputDir, { recursive: true });
       }
 
-      const image = sharp(imagePath).greyscale(); // Work on grayscale
-      const metadata = await image.metadata();
-      const { width, height } = metadata;
-      const raw = await image.raw().toBuffer();
+      const { buffer: raw, width, height } = await convertToGreyscale(imagePath);
 
       const histogram = new Array(256).fill(0);
       for (let i = 0; i < raw.length; i++) {
