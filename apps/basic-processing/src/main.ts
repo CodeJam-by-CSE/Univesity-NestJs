@@ -12,6 +12,6 @@ async function bootstrap() {
     },
   );
   await app.listen();
-  console.log('✅ Image Processing Microservice is running on port 4002');
+  console.log('✅ Image Processing Basic-Processing Microservice is running on port 4002');
 }
 bootstrap();

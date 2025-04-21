@@ -7,6 +7,7 @@ export class AppService {
   constructor(
     @Inject('BASIC_PROCESSING_SERVICE') private basicProcessingClient: ClientProxy,
     @Inject('ENHANCEMENT_SERVICE') private enhancementClient: ClientProxy,
+    @Inject('FEATURE_DETECTION_SERVICE') private featureDetectionClient: ClientProxy,
   ) { }
     
 
@@ -15,6 +16,20 @@ export class AppService {
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
       { cmd: 'histogram_equalization_image' },
+       imagePath
+    );
+  }
+
+  sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
+    return this.featureDetectionClient.send(
+      { cmd: 'canny_edge_detection_image' },
+       imagePath
+    );
+  }
+  
+  sendToFeatureDetectionHoughTransform(imagePath: string) {
+    return this.featureDetectionClient.send(
+      { cmd: 'hough_transform_image' },
        imagePath
     );
   }

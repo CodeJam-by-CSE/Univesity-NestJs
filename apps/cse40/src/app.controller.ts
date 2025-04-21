@@ -16,6 +16,16 @@ export class AppController {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
   }
 
+  @Post('canny_edge_detection_image')
+  async cannyEdgeDetection(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToFeatureDetectionCannyEdgeDetection(body.imagePath);
+  }
+
+  @Post('hough_transform_image')
+  async houghTransform(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToFeatureDetectionHoughTransform(body.imagePath);
+  }
+
   @Post('greyscale')
   async convertGreyscale(@Body() body: { imageBase64: string }) {
     return this.mainService.sendToBasicProcessingGreyscale(body.imageBase64);
