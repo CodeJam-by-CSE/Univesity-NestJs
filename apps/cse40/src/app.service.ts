@@ -19,6 +19,19 @@ export class AppService {
     );
   }
 
+  sendToEnhancementFloodFill(
+    imagePath: string,  
+    sr: number,
+    sc: number,
+    newColor: number
+
+  ) { 
+    return this.enhancementClient.send(
+      { cmd: 'flood_fill' },
+      { imagePath, sr, sc, newColor }
+    );
+  }
+
   
 
   sendToBasicProcessingResize(imagePath: string, width: number, height: number) {

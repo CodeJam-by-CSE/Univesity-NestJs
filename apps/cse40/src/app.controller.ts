@@ -43,4 +43,8 @@ export class AppController {
   async rotateImage(@Body() body: { imagePath: string, angle: number }) {
     return this.mainService.sendToBasicProcessingRotate(body.imagePath, body.angle);
   }
+  @Post('flood_fill')
+  async floodFill(@Body() body: { imagePath: string; sr: number; sc: number; newColor: number }) {
+    return this.mainService.sendToEnhancementFloodFill(body.imagePath, body.sr, body.sc, body.newColor);
+  }
 }
