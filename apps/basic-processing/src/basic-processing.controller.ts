@@ -41,7 +41,7 @@ export class BasicProcessingController {
   async handleEmboss(imagePath: string) {     
     console.log('Received image for embossing');
     return await this.basicProcessingService.embossImage(imagePath);
-    
+  }  
   @EventPattern({ cmd: 'rotate_image' })
   async handleRotate(data: { imagePath: string; angle: number }) {
     console.log('Received image for rotation');

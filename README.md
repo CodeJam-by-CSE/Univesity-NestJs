@@ -38,7 +38,10 @@ $ npm install
 $ npm start cse40
 
 # run basic-processing service
-$ npm start basic-processing
+$ npm run start:basic-processing
+
+# run enhancement service
+$ npm run start:enhancement
 
 # watch mode
 $ npm run start:dev

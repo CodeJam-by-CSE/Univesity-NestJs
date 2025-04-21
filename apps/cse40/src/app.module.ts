@@ -7,7 +7,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'EDGE_SERVICE',
+        name: 'ENHANCEMENT_SERVICE',
         transport: Transport.TCP,
         options: { host: 'localhost', port: 4001 },
       },
