@@ -17,7 +17,7 @@ export class AppController {
   }
   
   @Post('flood_fill_image')
-  async floodFillImage(@Body() body: { imagePath: string; sr: number; sc: number; newColor: number }) {
+  async floodFillImage(@Body() body: { imagePath: string; sr: number; sc: number; newColor: [number, number, number] }) {
     return this.mainService.sendToEnhancementFloodFill(body.imagePath, body.sr, body.sc, body.newColor);
   }
   
