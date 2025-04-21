@@ -26,6 +26,12 @@ export class AppController {
     return this.mainService.sendToFeatureDetectionHoughTransform(body.imagePath);
   }
 
+  
+  @Post('flood_fill_image')
+  async floodFillImage(@Body() body: { imagePath: string; sr: number; sc: number; newColor: [number, number, number] }) {
+    return this.mainService.sendToEnhancementFloodFill(body.imagePath, body.sr, body.sc, body.newColor);
+  }
+  
   @Post('greyscale')
   async convertGreyscale(@Body() body: { imageBase64: string }) {
     return this.mainService.sendToBasicProcessingGreyscale(body.imageBase64);
