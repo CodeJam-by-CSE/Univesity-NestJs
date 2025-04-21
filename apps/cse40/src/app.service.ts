@@ -22,7 +22,7 @@ export class AppService {
     imagePath: string,  
     sr: number,
     sc: number,
-    newColor: number
+    newColor: [number, number, number]
 
   ) { 
     return this.enhancementClient.send(
