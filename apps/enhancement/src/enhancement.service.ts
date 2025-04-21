@@ -17,7 +17,7 @@ export class EnhancementService {
     return await this.histogramService.equalizeHistogram(imagePath)
   }
 
- async floodFill(imagePath: string, sr: number, sc: number, newColor: number) {
+ async floodFill(imagePath: string, sr: number, sc: number, newColor: [number,number,number]) {
     return await this.floodFillService.floodFill({
       imagePath,
       sr,   
