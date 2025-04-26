@@ -31,6 +31,12 @@ export class BasicProcessingController {
     return await this.basicProcessingService.adjustContrast(data);
   }
 
+  @EventPattern({ cmd: 'rotate_image' })
+  async handleRotate(data: { imagePath: string; angle: number }) {
+    console.log('Received image for rotation');
+    return await this.basicProcessingService.rotateImage(data);
+  }
+
   @EventPattern({ cmd: 'sharpen_image' })
   async handleSharpen(imagePath: string) {
     console.log('Received image for sharpening');
@@ -43,9 +49,5 @@ export class BasicProcessingController {
     return await this.basicProcessingService.embossImage(imagePath);
   }
 
-  @EventPattern({ cmd: 'rotate_image' })
-  async handleRotate(data: { imagePath: string; angle: number }) {
-    console.log('Received image for rotation');
-    return await this.basicProcessingService.rotateImage(data);
-  }
+
 }

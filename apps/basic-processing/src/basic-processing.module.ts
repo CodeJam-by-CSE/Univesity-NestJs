@@ -8,7 +8,7 @@ import { ContrastService } from './services/contrast';
 import { NegativeService } from './services/negative';
 import { SharpenService } from './services/sharpen.service';
 import { EmbossService } from './services/embossing.service';
-import { RotateService } from './services/rotate.service';
+import { RotateService } from './services/rotate';
 
 @Module({
   imports: [],

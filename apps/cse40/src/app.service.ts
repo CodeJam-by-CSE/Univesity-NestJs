@@ -40,6 +40,13 @@ export class AppService {
     );
   }
 
+  sendToBasicProcessingRotate(imagePath: string, angle: number) {
+    return this.basicProcessingClient.send(
+      { cmd: 'rotate_image' },
+      { imagePath, angle }
+    );
+  }
+
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
       { cmd: 'histogram_equalization_image' },
@@ -79,12 +86,7 @@ export class AppService {
     );
   }
 
-  sendToBasicProcessingRotate(imagePath: string, angle: number) {
-    return this.basicProcessingClient.send(
-      { cmd: 'rotate_image' },
-      { imagePath, angle }
-    );
-  }
+
 }
 
 

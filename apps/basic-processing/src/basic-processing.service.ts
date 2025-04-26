@@ -6,7 +6,7 @@ import { ContrastService } from './services/contrast';
 import { NegativeService } from './services/negative';
 import { SharpenService } from './services/sharpen.service';
 import { EmbossService } from './services/embossing.service';
-import { RotateService } from './services/rotate.service';
+import { RotateService } from './services/rotate';
 
 @Injectable()
 export class BasicProcessingService {
@@ -36,14 +36,14 @@ export class BasicProcessingService {
     return await this.contrastService.adjust(data);
   }
 
+  async rotateImage(data: { imagePath: string; angle: number }) {
+    return await this.rotateService.rotate(data);
+  }
+
   async sharpenImage(imagePath: string) {
     return await this.sharpenService.sharpenImage(imagePath);
   }
   async embossImage(imagePath: string) {
     return await this.embossService.embossImage(imagePath);
-  }
-
-  async rotateImage(data: { imagePath: string; angle: number }) {
-    return await this.rotateService.rotate(data);
   }
 }

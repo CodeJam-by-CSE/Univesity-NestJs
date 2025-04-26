@@ -25,6 +25,11 @@ export class AppController {
     return this.mainService.sendToBasicProcessingContrast(body.imagePath, body.factor);
   }
 
+  @Post('rotate')
+  async rotateImage(@Body() body: { imagePath: string, angle: number }) {
+    return this.mainService.sendToBasicProcessingRotate(body.imagePath, body.angle);
+  }
+
   @Post('histogram_equalization_image')
   async histogramImageEnhancement(@Body() body: { imagePath: string }) {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
@@ -53,8 +58,5 @@ export class AppController {
     return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
   }
 
-  @Post('rotate')
-  async rotateImage(@Body() body: { imagePath: string, angle: number }) {
-    return this.mainService.sendToBasicProcessingRotate(body.imagePath, body.angle);
-  }
+
 }
