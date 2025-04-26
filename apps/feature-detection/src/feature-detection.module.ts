@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { FeatureDetectionController } from './feature-detection.controller';
 import { FeatureDetectionService } from './feature-detection.service';
 import { CannyEdgeDetectionService } from './services/cannyEdgeDetection.service';
+import { HarrisSharpService } from './services/Hariscorner.service';
 
 
 @Module({
@@ -10,7 +11,8 @@ import { CannyEdgeDetectionService } from './services/cannyEdgeDetection.service
   controllers: [FeatureDetectionController],
   providers: [
     FeatureDetectionService,
-    CannyEdgeDetectionService
+    CannyEdgeDetectionService,
+    HarrisSharpService
   ],
 })
 export class FeatureDetectionModule {}

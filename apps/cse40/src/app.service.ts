@@ -27,6 +27,14 @@ export class AppService {
     );
   }
 
+  sendToFeatureDetectionHarrisSharp(imagePath: string, k: number = 0.04, windowSize: number = 3, thresh: number = 1e-5) {
+    return this.featureDetectionClient.send(
+      { cmd: 'harris_sharp_image' },
+      { imagePath, k, windowSize, thresh }
+    );
+  }
+
+
   sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
     return this.basicProcessingClient.send(
       { cmd: 'resize_image' },
