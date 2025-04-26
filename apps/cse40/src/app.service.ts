@@ -33,6 +33,13 @@ export class AppService {
     );
   }
 
+  sendToBasicProcessingContrast(imagePath: string, factor: number) {
+    return this.basicProcessingClient.send(
+      { cmd: 'adjust_contrast' },
+      { imagePath, factor }
+    );
+  }
+
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
       { cmd: 'histogram_equalization_image' },
@@ -57,12 +64,7 @@ export class AppService {
 
 
 
-  sendToBasicProcessingContrast(imagePath: string, factor: number) {
-    return this.basicProcessingClient.send(
-      { cmd: 'adjust_contrast' },
-      { imagePath, factor }
-    );
-  }
+
 
   sendToBasicProcessingSharpen(imagePath: string) {
     return this.basicProcessingClient.send(

@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { ResizeService } from './services/resize';
 import { GreyscaleService } from './services/greyscale';
-import { ContrastService } from './services/contrast.service';
+import { ContrastService } from './services/contrast';
 import { NegativeService } from './services/negative';
 import { SharpenService } from './services/sharpen.service';
 import { EmbossService } from './services/embossing.service';
@@ -28,13 +28,14 @@ export class BasicProcessingService {
     return this.greyscaleService.saveGreyscaleImage(imagePath);
   }
 
+  async createNegative(imagePath: string) {
+    return await this.negativeService.createNegative(imagePath);
+  }
+
   async adjustContrast(data: { imagePath: string; factor: number }) {
     return await this.contrastService.adjust(data);
   }
 
-  async createNegative(imagePath: string) {
-    return await this.negativeService.createNegative(imagePath);
-  }
   async sharpenImage(imagePath: string) {
     return await this.sharpenService.sharpenImage(imagePath);
   }

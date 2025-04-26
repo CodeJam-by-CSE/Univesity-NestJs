@@ -10,7 +10,7 @@ export class ContrastService {
   private applyContrast(imageData: Buffer, width: number, height: number, channels: number, factor: number): Buffer {
     const result = Buffer.alloc(imageData.length);
     const f = factor;
-    
+
     // Calculate contrast adjustment parameters
     const mean = 128;
     const adjustment = (259 * (f + 255)) / (255 * (259 - f));
@@ -34,7 +34,7 @@ export class ContrastService {
   async adjust(data: { imagePath: string; factor: number }) {
     try {
       const { imagePath, factor } = data;
-      
+
       if (!fs.existsSync(imagePath)) {
         throw new Error('File does not exist');
       }
@@ -53,7 +53,7 @@ export class ContrastService {
       const channels = 3;
 
       const rawData = await image.raw().toBuffer();
-      
+
       const contrastedBuffer = this.applyContrast(rawData, width!, height!, channels, factor);
 
       // Save the contrasted image
@@ -64,8 +64,8 @@ export class ContrastService {
           channels: channels
         }
       })
-      .png()
-      .toFile(outputFilePath);
+        .png()
+        .toFile(outputFilePath);
 
       return {
         success: true,
