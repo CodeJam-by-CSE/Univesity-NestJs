@@ -8,8 +8,9 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "start:enhancement": "ts-node apps/enhancement/src/main.ts",
-    "start:basic-processing": "ts-node apps/basic-processing/src/main.ts",
+    "start:enhancement": "ts-node apps/enhancement/src/main.ts", 
+    "start:basic-processing": "ts-node apps/basic-processing/src/main.ts", 
+    "start:feature-detection": "ts-node apps/feature-detection/src/main.ts",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -27,7 +28,6 @@
     "@nestjs/microservices": "^11.0.16",
     "@nestjs/platform-express": "^11.0.16",
     "jimp": "^1.6.0",
-    "queue-typescript": "^1.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "sharp": "^0.34.1"
