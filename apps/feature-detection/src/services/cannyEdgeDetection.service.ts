@@ -4,11 +4,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { MessagePattern } from '@nestjs/microservices';
 import { convertToGreyscale } from '../../../common/utils/greyscale';
-import { applyGaussianBlur } from '../../../common/utils/gaussianBlur';
-import { computeSobelGradients } from '../../../common/utils/sobelGradients';
-import { nonMaxSuppression } from '../../../common/utils/nonMaxSuppression';
-import { doubleThreshold } from '../../../common/utils/doubleThreshold';
-import { hysteresis } from '../../../common/utils/hysteresis';
+import { applyGaussianBlur } from './gaussianBlur';
+import { computeSobelGradients } from './sobelGradients';
+import { nonMaxSuppression } from './nonMaxSuppression';
+import { doubleThreshold } from './doubleThreshold';
+import { hysteresis } from './hysteresis';
 
 
 @Injectable()
