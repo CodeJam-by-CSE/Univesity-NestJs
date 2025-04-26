@@ -43,6 +43,9 @@ $ npm run start:basic-processing
 # run enhancement service
 $ npm run start:enhancement
 
+# run feature-detection service
+$ npm run start:feature-detection
+
 # watch mode
 $ npm run start:dev
 

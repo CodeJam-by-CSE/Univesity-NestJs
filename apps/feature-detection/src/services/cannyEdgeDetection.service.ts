@@ -1,0 +1,58 @@
+import { Injectable } from '@nestjs/common';
+import * as sharp from 'sharp';
+import * as fs from 'fs';
+import * as path from 'path';
+import { MessagePattern } from '@nestjs/microservices';
+import { convertToGreyscale } from '../../../common/utils/greyscale';
+import { applyGaussianBlur } from '../../../common/utils/gaussianBlur';
+import { computeSobelGradients } from '../../../common/utils/sobelGradients';
+import { nonMaxSuppression } from '../../../common/utils/nonMaxSuppression';
+import { doubleThreshold } from '../../../common/utils/doubleThreshold';
+import { hysteresis } from '../../../common/utils/hysteresis';
+
+
+@Injectable()
+export class CannyEdgeDetectionService {
+  @MessagePattern({ cmd: 'canny_edge_detection' })
+  async detectEdges(imagePath: string) {
+    try {
+      if (!fs.existsSync(imagePath)) throw new Error('File does not exist');
+
+      const outputDir = path.join(process.cwd(), 'apps/feature-detection/output_images');
+      const outputFileName = 'canny_edges.png';
+      const outputFilePath = path.join(outputDir, outputFileName);
+      if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+      // Convert to greyscale
+      const { buffer: gray, width, height } = await convertToGreyscale(imagePath);
+
+      // Apply Gaussian Blur
+      const blurred = applyGaussianBlur(gray, width!, height!);
+
+      // Calculate gradients
+      const { magnitude, direction } = computeSobelGradients(blurred, width!, height!);
+
+      // Non-Max Suppression
+      const thinEdges = nonMaxSuppression(magnitude, direction, width!, height!);
+
+      // Double Threshold
+      const { strongEdges, weakEdges } = doubleThreshold(thinEdges, width!, height!, 20, 40);
+
+      // Hysteresis
+      const finalEdges = hysteresis(strongEdges, weakEdges, width!, height!);
+
+      // Save the final output
+      await sharp(finalEdges, {
+        raw: { width: width!, height: height!, channels: 1 },
+      }).png().toFile(outputFilePath);
+
+      return {
+        success: true,
+        message: 'Canny edge detection complete',
+        savedImagePath: outputFilePath,
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+}

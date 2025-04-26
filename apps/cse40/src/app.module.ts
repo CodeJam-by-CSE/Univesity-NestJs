@@ -16,6 +16,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.TCP,
         options: { host: 'localhost', port: 4002 },
       },
+      {
+        name: 'FEATURE_DETECTION_SERVICE',
+        transport: Transport.TCP,
+        options: { host: 'localhost', port: 4003 },
+      },
     ]),
   ],
   controllers: [AppController],

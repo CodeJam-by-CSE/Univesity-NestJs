@@ -7,6 +7,7 @@ export class AppService {
   constructor(
     @Inject('BASIC_PROCESSING_SERVICE') private basicProcessingClient: ClientProxy,
     @Inject('ENHANCEMENT_SERVICE') private enhancementClient: ClientProxy,
+    @Inject('FEATURE_DETECTION_SERVICE') private featureDetectionClient: ClientProxy,
   ) { }
     
 
@@ -18,20 +19,13 @@ export class AppService {
        imagePath
     );
   }
-  sendToEnhancementFloodFill(
-    imagePath: string,  
-    sr: number,
-    sc: number,
-    newColor: [number, number, number]
 
-  ) { 
-    return this.enhancementClient.send(
-      { cmd: 'flood_fill_image' },
-      { imagePath, sr, sc, newColor }
+  sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
+    return this.featureDetectionClient.send(
+      { cmd: 'canny_edge_detection_image' },
+       imagePath
     );
   }
-
-  
 
   sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
     return this.basicProcessingClient.send(
