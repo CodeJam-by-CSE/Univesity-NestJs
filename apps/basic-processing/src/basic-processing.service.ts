@@ -4,8 +4,8 @@ import { ResizeService } from './services/resize';
 import { GreyscaleService } from './services/greyscale';
 import { ContrastService } from './services/contrast';
 import { NegativeService } from './services/negative';
-import { SharpenService } from './services/sharpen.service';
-import { EmbossService } from './services/embossing.service';
+import { SharpenService } from './services/sharpen';
+import { EmbossService } from './services/embossing';
 import { RotateService } from './services/rotate';
 
 @Injectable()

@@ -5,6 +5,22 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly mainService: AppService) { }
 
+  /**
+ * Controller Endpoints for Basic Image Processing Operations.
+ *
+ * Each endpoint handles a specific image processing task:
+ * - resize: Resize an image to specified width and height.
+ * - greyscale: Convert an image to greyscale.
+ * - negative: Create a negative of the image.
+ * - contrast: Adjust the image contrast by a given factor.
+ * - rotate: Rotate an image by a given angle.
+ * - sharpen: Sharpen the image to enhance details.
+ * - emboss: Apply an emboss filter to the image for a 3D effect.
+ *
+ * All endpoints accept POST requests with necessary parameters in the request body,
+ * and delegate the processing tasks to the corresponding methods in the MainService.
+ */
+
   @Post('resize')
   async resizeImage(@Body() body: { imagePath: string; width: number; height: number }) {
     return this.mainService.sendToBasicProcessingResize(body.imagePath, body.width, body.height);
@@ -30,6 +46,15 @@ export class AppController {
     return this.mainService.sendToBasicProcessingRotate(body.imagePath, body.angle);
   }
 
+  @Post('sharpen')
+  async sharpenImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
+  }
+  @Post('emboss')
+  async embossImage(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
+  }
+
   @Post('histogram_equalization_image')
   async histogramImageEnhancement(@Body() body: { imagePath: string }) {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
@@ -44,19 +69,4 @@ export class AppController {
   async harrisSharp(@Body() body: { imagePath: string; k?: number; windowSize?: number; thresh?: number }) {
     return this.mainService.sendToFeatureDetectionHarrisSharp(body.imagePath, body.k, body.windowSize, body.thresh);
   }
-
-
-
-
-
-  @Post('sharpen')
-  async sharpenImage(@Body() body: { imagePath: string }) {
-    return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
-  }
-  @Post('emboss')
-  async embossImage(@Body() body: { imagePath: string }) {
-    return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
-  }
-
-
 }

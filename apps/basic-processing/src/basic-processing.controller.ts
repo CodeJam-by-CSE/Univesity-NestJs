@@ -48,6 +48,4 @@ export class BasicProcessingController {
     console.log('Received image for embossing');
     return await this.basicProcessingService.embossImage(imagePath);
   }
-
-
 }

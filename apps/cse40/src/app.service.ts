@@ -47,6 +47,19 @@ export class AppService {
     );
   }
 
+  sendToBasicProcessingSharpen(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'sharpen_image' },
+      imagePath
+    );
+  }
+  sendToBasicProcessingEmboss(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'emboss_image' },
+      imagePath
+    );
+  }
+
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
       { cmd: 'histogram_equalization_image' },
@@ -73,18 +86,7 @@ export class AppService {
 
 
 
-  sendToBasicProcessingSharpen(imagePath: string) {
-    return this.basicProcessingClient.send(
-      { cmd: 'sharpen_image' },
-      imagePath
-    );
-  }
-  sendToBasicProcessingEmboss(imagePath: string) {
-    return this.basicProcessingClient.send(
-      { cmd: 'emboss_image' },
-      imagePath
-    );
-  }
+
 
 
 }

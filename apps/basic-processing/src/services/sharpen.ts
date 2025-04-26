@@ -33,11 +33,11 @@ export class SharpenService {
   private applyConvolution(imageData: Buffer, width: number, height: number, channels: number, kernelType: 'default' | 'strong' | 'subtle' = 'default'): Buffer {
     const result = Buffer.alloc(imageData.length);
     // Select kernel based on type
-    const selectedKernel = 
-      kernelType === 'strong' ? this.enhancedKernels.strong : 
-      kernelType === 'subtle' ? this.enhancedKernels.subtle : 
-      this.kernel;
-    
+    const selectedKernel =
+      kernelType === 'strong' ? this.enhancedKernels.strong :
+        kernelType === 'subtle' ? this.enhancedKernels.subtle :
+          this.kernel;
+
     const kernelSize = selectedKernel.length; // Kernel size (usually 3x3)
     const offset = Math.floor(kernelSize / 2);
 
@@ -70,7 +70,7 @@ export class SharpenService {
   // Enhanced color processing function
   private enhanceColors(imageData: Buffer, channels: number, saturation: number = 1.2): Buffer {
     const result = Buffer.alloc(imageData.length);
-    
+
     // Process each pixel
     for (let i = 0; i < imageData.length; i += channels) {
       if (channels >= 3) { // Only process if we have RGB data
@@ -78,15 +78,15 @@ export class SharpenService {
         const r = imageData[i];
         const g = imageData[i + 1];
         const b = imageData[i + 2];
-        
+
         // Calculate luminance (brightness)
         const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-        
+
         // Apply saturation enhancement
         result[i] = Math.min(255, Math.max(0, luminance + saturation * (r - luminance)));
         result[i + 1] = Math.min(255, Math.max(0, luminance + saturation * (g - luminance)));
         result[i + 2] = Math.min(255, Math.max(0, luminance + saturation * (b - luminance)));
-        
+
         // Copy alpha channel if present
         if (channels === 4 && i + 3 < imageData.length) {
           result[i + 3] = imageData[i + 3];
@@ -96,7 +96,7 @@ export class SharpenService {
         result[i] = imageData[i];
       }
     }
-    
+
     return result;
   }
 
@@ -125,7 +125,7 @@ export class SharpenService {
       const channels = metadata.channels || 3; // Default to RGB if not specified
 
       // Process the image in stages for better quality
-      
+
       // 1. Resize if necessary for better processing (maintain aspect ratio)
       const resizedImage = await image
         .resize({
@@ -136,24 +136,40 @@ export class SharpenService {
         })
         .raw()
         .toBuffer();
-      
+
       // Get new dimensions after resize
+      let resizedWidth = Math.min(width!, 1200);
+      let resizedHeight = Math.min(height!, 1200);
+
+      // Calculate the actual dimensions after resize while maintaining aspect ratio
+      if (width! > 1200 || height! > 1200) {
+        const aspectRatio = width! / height!;
+        if (width! > height!) {
+          resizedWidth = 1200;
+          resizedHeight = Math.round(1200 / aspectRatio);
+        } else {
+          resizedHeight = 1200;
+          resizedWidth = Math.round(1200 * aspectRatio);
+        }
+      }
+
+      // Now use these accurate dimensions
       const resizedMetadata = await sharp(resizedImage, {
         raw: {
-          width: Math.min(width!, 1200),
-          height: Math.min(height!, 1200),
+          width: resizedWidth,
+          height: resizedHeight,
           channels: channels
         }
       }).metadata();
-      
+
       // 2. Apply color enhancement
       const colorEnhanced = this.enhanceColors(resizedImage, channels);
-      
+
       // 3. Apply sharpening
       const sharpenedBuffer = this.applyConvolution(
-        colorEnhanced, 
-        resizedMetadata.width!, 
-        resizedMetadata.height!, 
+        colorEnhanced,
+        resizedMetadata.width!,
+        resizedMetadata.height!,
         channels,
         'strong' // Use stronger sharpening kernel
       );
@@ -166,8 +182,8 @@ export class SharpenService {
           channels: channels,
         }
       })
-      .png({ compressionLevel: 6, adaptiveFiltering: true })
-      .toFile(outputFilePath);
+        .png({ compressionLevel: 6, adaptiveFiltering: true })
+        .toFile(outputFilePath);
 
       return {
         success: true,
