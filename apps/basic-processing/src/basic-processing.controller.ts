@@ -19,16 +19,16 @@ export class BasicProcessingController {
     return await this.basicProcessingService.convertToGreyscale(data.imagePath);
   }
 
-  @EventPattern({ cmd: 'adjust_contrast' })
-  async handleContrast(data: { imagePath: string; factor: number }) {
-    console.log('Received image for contrast adjustment');
-    return await this.basicProcessingService.adjustContrast(data);
-  }
-
   @EventPattern({ cmd: 'create_negative' })
   async handleNegative(imagePath: string) {
     console.log('Received image for negative creation');
     return await this.basicProcessingService.createNegative(imagePath);
+  }
+
+  @EventPattern({ cmd: 'adjust_contrast' })
+  async handleContrast(data: { imagePath: string; factor: number }) {
+    console.log('Received image for contrast adjustment');
+    return await this.basicProcessingService.adjustContrast(data);
   }
 
   @EventPattern({ cmd: 'sharpen_image' })

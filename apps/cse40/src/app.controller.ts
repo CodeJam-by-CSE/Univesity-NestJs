@@ -15,6 +15,10 @@ export class AppController {
     return this.mainService.sendToBasicProcessingGreyscale(body.imagePath);
   }
 
+  @Post('negative')
+  async createNegative(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingNegative(body.imagePath);
+  }
 
   @Post('histogram_equalization_image')
   async histogramImageEnhancement(@Body() body: { imagePath: string }) {
@@ -38,10 +42,6 @@ export class AppController {
     return this.mainService.sendToBasicProcessingContrast(body.imagePath, body.factor);
   }
 
-  @Post('negative')
-  async createNegative(@Body() body: { imagePath: string }) {
-    return this.mainService.sendToBasicProcessingNegative(body.imagePath);
-  }
   @Post('sharpen')
   async sharpenImage(@Body() body: { imagePath: string }) {
     return this.mainService.sendToBasicProcessingSharpen(body.imagePath);

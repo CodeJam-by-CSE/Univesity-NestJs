@@ -11,7 +11,27 @@ export class AppService {
   ) { }
 
 
+  sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
+    return this.basicProcessingClient.send(
+      { cmd: 'resize_image' },
+      { imagePath, width, height }
+    );
+  }
 
+  sendToBasicProcessingGreyscale(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'convert_greyscale' },
+      { imagePath }
+    );
+  }
+
+
+  sendToBasicProcessingNegative(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'create_negative' },
+      imagePath
+    );
+  }
 
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
@@ -35,19 +55,7 @@ export class AppService {
   }
 
 
-  sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
-    return this.basicProcessingClient.send(
-      { cmd: 'resize_image' },
-      { imagePath, width, height }
-    );
-  }
 
-  sendToBasicProcessingGreyscale(imagePath: string) {
-    return this.basicProcessingClient.send(
-      { cmd: 'convert_greyscale' },
-      { imagePath }
-    );
-  }
 
   sendToBasicProcessingContrast(imagePath: string, factor: number) {
     return this.basicProcessingClient.send(
@@ -56,12 +64,6 @@ export class AppService {
     );
   }
 
-  sendToBasicProcessingNegative(imagePath: string) {
-    return this.basicProcessingClient.send(
-      { cmd: 'create_negative' },
-      imagePath
-    );
-  }
   sendToBasicProcessingSharpen(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'sharpen_image' },
