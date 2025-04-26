@@ -2,11 +2,11 @@
 import { Module } from '@nestjs/common';
 import { BasicProcessingController } from './basic-processing.controller';
 import { BasicProcessingService } from './basic-processing.service';
-import { ResizeService } from './services/resize.service';
+import { ResizeService } from './services/resize';
 import { GreyscaleService } from './services/greyscale.service';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
-import { SharpenService } from './services/sharpen.service'; 
+import { SharpenService } from './services/sharpen.service';
 import { EmbossService } from './services/embossing.service';
 import { RotateService } from './services/rotate.service';
 
@@ -19,9 +19,9 @@ import { RotateService } from './services/rotate.service';
     GreyscaleService,
     ContrastService,
     NegativeService,
-    SharpenService, 
-    EmbossService, 
+    SharpenService,
+    EmbossService,
     RotateService,
   ],
 })
-export class BasicProcessingModule {}
+export class BasicProcessingModule { }

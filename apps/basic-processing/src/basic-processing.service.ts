@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { ResizeService } from './services/resize.service';
+import { ResizeService } from './services/resize';
 import { GreyscaleService } from './services/greyscale.service';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
-import { SharpenService } from './services/sharpen.service'; 
+import { SharpenService } from './services/sharpen.service';
 import { EmbossService } from './services/embossing.service';
 import { RotateService } from './services/rotate.service';
 
@@ -18,7 +18,7 @@ export class BasicProcessingService {
     private readonly sharpenService: SharpenService,
     private readonly embossService: EmbossService,
     private readonly rotateService: RotateService,
-  ) {}
+  ) { }
 
   async resizeImage(data: { imagePath: string; width: number; height: number }) {
     return await this.resizeService.resize(data);
@@ -36,7 +36,7 @@ export class BasicProcessingService {
     return await this.negativeService.createNegative(imagePath);
   }
   async sharpenImage(imagePath: string) {
-    return await this.sharpenService.sharpenImage(imagePath); 
+    return await this.sharpenService.sharpenImage(imagePath);
   }
   async embossImage(imagePath: string) {
     return await this.embossService.embossImage(imagePath);

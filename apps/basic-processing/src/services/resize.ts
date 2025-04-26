@@ -29,7 +29,7 @@ export class ResizeService {
 
       const resizedBuffer = this.bilinearInterpolation(inputBuffer, inputInfo.width, inputInfo.height, width, height);
 
-      // Save the negative image
+      // Save the resized image
       await sharp(resizedBuffer, {
         raw: {
           width: width,
@@ -45,7 +45,7 @@ export class ResizeService {
         message: 'Image resized successfully',
         savedImagePath: outputFilePath,
       };
-      
+
     } catch (error) {
       return {
         success: false,
@@ -61,7 +61,7 @@ export class ResizeService {
     outputWidth: number,
     outputHeight: number
   ): Buffer {
-    const outputBuffer = Buffer.alloc(outputWidth * outputHeight * 3); // Assuming 3 channels (RGB)
+    const outputBuffer = Buffer.alloc(outputWidth * outputHeight * 3);
 
     for (let y = 0; y < outputHeight; y++) {
       for (let x = 0; x < outputWidth; x++) {
