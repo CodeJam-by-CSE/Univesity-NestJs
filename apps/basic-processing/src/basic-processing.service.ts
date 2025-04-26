@@ -25,7 +25,7 @@ export class BasicProcessingService {
   }
 
   async convertToGreyscale(imagePath: string) {
-    return this.greyscaleService.convert(imagePath);
+    return this.greyscaleService.saveGreyscaleImage(imagePath);
   }
 
   async adjustContrast(data: { imagePath: string; factor: number }) {
