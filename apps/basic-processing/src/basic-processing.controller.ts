@@ -14,9 +14,9 @@ export class BasicProcessingController {
   }
 
   @EventPattern({ cmd: 'convert_greyscale' })
-  async handleGreyscale(imagePath: string) {
+  async handleGreyscale(data: { imagePath: string }) {
     console.log('Received image for greyscale conversion');
-    return await this.basicProcessingService.convertToGreyscale(imagePath);
+    return await this.basicProcessingService.convertToGreyscale(data.imagePath);
   }
 
   @EventPattern({ cmd: 'adjust_contrast' })

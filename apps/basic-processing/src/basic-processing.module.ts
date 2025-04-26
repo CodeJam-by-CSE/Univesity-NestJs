@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { BasicProcessingController } from './basic-processing.controller';
 import { BasicProcessingService } from './basic-processing.service';
 import { ResizeService } from './services/resize';
-import { GreyscaleService } from './services/greyscale.service';
+import { GreyscaleService } from './services/greyscale';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
 import { SharpenService } from './services/sharpen.service';

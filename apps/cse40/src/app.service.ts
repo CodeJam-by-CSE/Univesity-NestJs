@@ -9,21 +9,21 @@ export class AppService {
     @Inject('ENHANCEMENT_SERVICE') private enhancementClient: ClientProxy,
     @Inject('FEATURE_DETECTION_SERVICE') private featureDetectionClient: ClientProxy,
   ) { }
-    
+
 
 
 
   sendToEnhancementHistogram(imagePath: string) {
     return this.enhancementClient.send(
       { cmd: 'histogram_equalization_image' },
-       imagePath
+      imagePath
     );
   }
 
   sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
     return this.featureDetectionClient.send(
       { cmd: 'canny_edge_detection_image' },
-       imagePath
+      imagePath
     );
   }
 
@@ -45,7 +45,7 @@ export class AppService {
   sendToBasicProcessingGreyscale(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'convert_greyscale' },
-      imagePath
+      { imagePath }
     );
   }
 

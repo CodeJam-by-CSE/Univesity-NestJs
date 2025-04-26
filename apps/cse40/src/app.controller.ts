@@ -10,6 +10,11 @@ export class AppController {
     return this.mainService.sendToBasicProcessingResize(body.imagePath, body.width, body.height);
   }
 
+  @Post('greyscale')
+  async convertGreyscale(@Body() body: { imagePath: string }) {
+    return this.mainService.sendToBasicProcessingGreyscale(body.imagePath);
+  }
+
 
   @Post('histogram_equalization_image')
   async histogramImageEnhancement(@Body() body: { imagePath: string }) {
@@ -26,10 +31,7 @@ export class AppController {
     return this.mainService.sendToFeatureDetectionHarrisSharp(body.imagePath, body.k, body.windowSize, body.thresh);
   }
 
-  @Post('greyscale')
-  async convertGreyscale(@Body() body: { imageBase64: string }) {
-    return this.mainService.sendToBasicProcessingGreyscale(body.imageBase64);
-  }
+
 
   @Post('contrast')
   async adjustContrast(@Body() body: { imagePath: string; factor: number }) {

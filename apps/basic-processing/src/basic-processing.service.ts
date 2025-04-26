@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ResizeService } from './services/resize';
-import { GreyscaleService } from './services/greyscale.service';
+import { GreyscaleService } from './services/greyscale';
 import { ContrastService } from './services/contrast.service';
 import { NegativeService } from './services/negative.service';
 import { SharpenService } from './services/sharpen.service';
@@ -25,7 +25,7 @@ export class BasicProcessingService {
   }
 
   async convertToGreyscale(imagePath: string) {
-    return await this.greyscaleService.convert(imagePath);
+    return this.greyscaleService.convert(imagePath);
   }
 
   async adjustContrast(data: { imagePath: string; factor: number }) {
