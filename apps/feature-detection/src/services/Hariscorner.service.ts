@@ -20,7 +20,7 @@ export class HarrisSharpService {
   ) {
     const { imagePath, k = 0.04, windowSize = 3, thresh = 1e-5 } = data;
     if (!fs.existsSync(imagePath)) {
-      throw new Error('Image not found');
+      return { error: 'Image not found', statusCode: 404 };
     }
 
     // Load & preprocess image
@@ -172,6 +172,6 @@ export class HarrisSharpService {
       .toFile(outPath);
 
     this.logger.log(`Detected ${corners.length} corners, saved to ${outPath}`);
-    return { corners, outputPath: outPath };
+    return { corners: corners.slice(0, 20), outputPath: outPath };
   }
 }
