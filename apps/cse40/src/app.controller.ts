@@ -1,8 +1,8 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { 
-  ResizeImageDto, 
+import {
+  ResizeImageDto,
   GreyscaleDto,
   ContrastDto,
   ImagePathDto,
@@ -26,7 +26,7 @@ import {
 @ApiTags('basic-processing')
 @Controller('basic-processing')
 export class BasicProcessingController {
-  constructor(private readonly mainService: AppService) {}
+  constructor(private readonly mainService: AppService) { }
 
   @Post('resize')
   @ApiOperation({ summary: 'Resize an image to specific dimensions' })
@@ -71,6 +71,7 @@ export class BasicProcessingController {
     return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
   }
 
+
   @Post('emboss')
   @ApiOperation({ summary: 'Apply emboss effect to an image' })
   @ApiResponse({ status: 200, description: 'Emboss effect successfully applied' })
@@ -88,7 +89,7 @@ export class BasicProcessingController {
 @ApiTags('enhancement')
 @Controller('enhancement')
 export class EnhancementController {
-  constructor(private readonly mainService: AppService) {}
+  constructor(private readonly mainService: AppService) { }
 
   @Post('histogram-equalization')
   @ApiOperation({ summary: 'Enhance image using histogram equalization' })
@@ -100,7 +101,7 @@ export class EnhancementController {
   @Post('flood_fill_image')
   async floodFillImage(@Body() body: FloodFillDto) {
     return this.mainService.sendToEnhancementFloodFill(body.imagePath, body.sr, body.sc, body.newColor);
-  } 
+  }
 }
 
 /**
@@ -113,7 +114,7 @@ export class EnhancementController {
 @ApiTags('feature-detection')
 @Controller('feature-detection')
 export class FeatureDetectionController {
-  constructor(private readonly mainService: AppService) {}
+  constructor(private readonly mainService: AppService) { }
 
   @Post('canny-edge-detection')
   @ApiOperation({ summary: 'Detect edges of a given image using Canny algorithm' })
