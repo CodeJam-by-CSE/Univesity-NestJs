@@ -87,7 +87,7 @@ export class AppController {
     return this.mainService.sendToFeatureDetectionCannyEdgeDetection(body.imagePath);
   }
 
-  @Post('harris_sharp_image')
+  @Post('harris_corner_detection_image')
   async harrisSharp(@Body() body: { imagePath: string; k?: number; windowSize?: number; thresh?: number }) {
     return this.mainService.sendToFeatureDetectionHarrisSharp(body.imagePath, body.k, body.windowSize, body.thresh);
   }

@@ -83,7 +83,7 @@ export class AppService {
 
   sendToFeatureDetectionHarrisSharp(imagePath: string, k: number = 0.04, windowSize: number = 3, thresh: number = 1e-5) {
     return this.featureDetectionClient.send(
-      { cmd: 'harris_sharp_image' },
+      { cmd: 'harris_corner_detection_image' },
       { imagePath, k, windowSize, thresh }
     );
   }

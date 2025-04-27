@@ -8,7 +8,7 @@ import * as sharp from 'sharp';
 export class HarrisSharpService {
   private readonly logger = new Logger(HarrisSharpService.name);
 
-  @MessagePattern({ cmd: 'harris_sharp' })
+  @MessagePattern({ cmd: 'harris_corner' })
   async detectCorners(
     @Payload()
     data: {
