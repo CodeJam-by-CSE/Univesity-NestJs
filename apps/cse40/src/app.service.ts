@@ -9,30 +9,6 @@ export class AppService {
     @Inject('ENHANCEMENT_SERVICE') private enhancementClient: ClientProxy,
     @Inject('FEATURE_DETECTION_SERVICE') private featureDetectionClient: ClientProxy,
   ) { }
-    
-
-
-
-  sendToEnhancementHistogram(imagePath: string) {
-    return this.enhancementClient.send(
-      { cmd: 'histogram_equalization_image' },
-       imagePath
-    );
-  }
-
-  sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
-    return this.featureDetectionClient.send(
-      { cmd: 'canny_edge_detection_image' },
-       imagePath
-    );
-  }
-
-  sendToFeatureDetectionHarrisSharp(imagePath: string, k: number = 0.04, windowSize: number = 3, thresh: number = 1e-5) {
-    return this.featureDetectionClient.send(
-      { cmd: 'harris_sharp_image' },
-      { imagePath, k, windowSize, thresh }
-    );
-  }
 
 
   sendToBasicProcessingResize(imagePath: string, width: number, height: number) {
@@ -45,6 +21,14 @@ export class AppService {
   sendToBasicProcessingGreyscale(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'convert_greyscale' },
+      { imagePath }
+    );
+  }
+
+
+  sendToBasicProcessingNegative(imagePath: string) {
+    return this.basicProcessingClient.send(
+      { cmd: 'create_negative' },
       imagePath
     );
   }
@@ -56,12 +40,13 @@ export class AppService {
     );
   }
 
-  sendToBasicProcessingNegative(imagePath: string) {
+  sendToBasicProcessingRotate(imagePath: string, angle: number) {
     return this.basicProcessingClient.send(
-      { cmd: 'create_negative' },
-      imagePath
+      { cmd: 'rotate_image' },
+      { imagePath, angle }
     );
   }
+
   sendToBasicProcessingSharpen(imagePath: string) {
     return this.basicProcessingClient.send(
       { cmd: 'sharpen_image' },
@@ -75,12 +60,42 @@ export class AppService {
     );
   }
 
-  sendToBasicProcessingRotate(imagePath: string, angle: number) {
-    return this.basicProcessingClient.send(
-      { cmd: 'rotate_image' },
-      { imagePath, angle }
+  sendToEnhancementHistogram(imagePath: string) {
+    return this.enhancementClient.send(
+      { cmd: 'histogram_equalization_image' },
+      imagePath
     );
   }
+
+  sendToEnhancementFloodFill(imagePath: string, sr: number, sc: number, newColor: [number, number, number]) {
+    return this.enhancementClient.send(
+      { cmd: 'flood_fill_image' },
+      { imagePath, sr, sc, newColor }
+    );
+  }
+
+  sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
+    return this.featureDetectionClient.send(
+      { cmd: 'canny_edge_detection_image' },
+      imagePath
+    );
+  }
+
+  sendToFeatureDetectionHarrisSharp(imagePath: string, k: number = 0.04, windowSize: number = 3, thresh: number = 1e-5) {
+    return this.featureDetectionClient.send(
+      { cmd: 'harris_corner_detection_image' },
+      { imagePath, k, windowSize, thresh }
+    );
+  }
+
+
+
+
+
+
+
+
+
 }
 
 

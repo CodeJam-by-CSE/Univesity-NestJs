@@ -8,7 +8,7 @@ import * as sharp from 'sharp';
 export class HarrisSharpService {
   private readonly logger = new Logger(HarrisSharpService.name);
 
-  @MessagePattern({ cmd: 'harris_sharp' })
+  @MessagePattern({ cmd: 'harris_corner' })
   async detectCorners(
     @Payload()
     data: {
@@ -37,13 +37,13 @@ export class HarrisSharpService {
 
     // Sobel kernels
     const Sx = [
-      [ 1, 0, -1],
-      [ 2, 0, -2],
-      [ 1, 0, -1],
+      [1, 0, -1],
+      [2, 0, -2],
+      [1, 0, -1],
     ];
     const Sy = [
-      [ 1,  2,  1],
-      [ 0,  0,  0],
+      [1, 2, 1],
+      [0, 0, 0],
       [-1, -2, -1],
     ];
 
@@ -123,10 +123,10 @@ export class HarrisSharpService {
         const i = idx(x, y);
         const val = R[i];
         if (val > thresh &&
-            val > R[idx(x - 1, y)] &&
-            val > R[idx(x + 1, y)] &&
-            val > R[idx(x, y - 1)] &&
-            val > R[idx(x, y + 1)]) {
+          val > R[idx(x - 1, y)] &&
+          val > R[idx(x + 1, y)] &&
+          val > R[idx(x, y - 1)] &&
+          val > R[idx(x, y + 1)]) {
           corners.push({ x, y, r: val });
         }
       }

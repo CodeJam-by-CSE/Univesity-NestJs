@@ -5,7 +5,7 @@ import { BasicProcessingService } from './basic-processing.service';
 
 @Controller()
 export class BasicProcessingController {
-  constructor(private readonly basicProcessingService: BasicProcessingService) {}
+  constructor(private readonly basicProcessingService: BasicProcessingService) { }
 
   @EventPattern({ cmd: 'resize_image' })
   async handleResize(data: { imagePath: string; width: number; height: number }) {
@@ -14,15 +14,9 @@ export class BasicProcessingController {
   }
 
   @EventPattern({ cmd: 'convert_greyscale' })
-  async handleGreyscale(imagePath: string) {
+  async handleGreyscale(data: { imagePath: string }) {
     console.log('Received image for greyscale conversion');
-    return await this.basicProcessingService.convertToGreyscale(imagePath);
-  }
-
-  @EventPattern({ cmd: 'adjust_contrast' })
-  async handleContrast(data: { imagePath: string; factor: number }) {
-    console.log('Received image for contrast adjustment');
-    return await this.basicProcessingService.adjustContrast(data);
+    return await this.basicProcessingService.convertToGreyscale(data.imagePath);
   }
 
   @EventPattern({ cmd: 'create_negative' })
@@ -31,20 +25,27 @@ export class BasicProcessingController {
     return await this.basicProcessingService.createNegative(imagePath);
   }
 
+  @EventPattern({ cmd: 'adjust_contrast' })
+  async handleContrast(data: { imagePath: string; factor: number }) {
+    console.log('Received image for contrast adjustment');
+    return await this.basicProcessingService.adjustContrast(data);
+  }
+
+  @EventPattern({ cmd: 'rotate_image' })
+  async handleRotate(data: { imagePath: string; angle: number }) {
+    console.log('Received image for rotation');
+    return await this.basicProcessingService.rotateImage(data);
+  }
+
   @EventPattern({ cmd: 'sharpen_image' })
   async handleSharpen(imagePath: string) {
     console.log('Received image for sharpening');
     return await this.basicProcessingService.sharpenImage(imagePath);
   }
-  
+
   @EventPattern({ cmd: 'emboss_image' })
-  async handleEmboss(imagePath: string) {     
+  async handleEmboss(imagePath: string) {
     console.log('Received image for embossing');
     return await this.basicProcessingService.embossImage(imagePath);
-  }  
-  @EventPattern({ cmd: 'rotate_image' })
-  async handleRotate(data: { imagePath: string; angle: number }) {
-    console.log('Received image for rotation');
-    return await this.basicProcessingService.rotateImage(data);
   }
 }
