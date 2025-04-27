@@ -69,7 +69,7 @@ export class ContrastService {
         }
       })
         .png()
-        .toFile(outputFileName);
+        .toFile(outputFilePath);
 
       return {
         success: true,
