@@ -67,6 +67,13 @@ export class AppService {
     );
   }
 
+  sendToEnhancementFloodFill(imagePath: string, sr: number, sc: number, newColor: [number, number, number]) {
+    return this.enhancementClient.send(
+      { cmd: 'flood_fill_image' },
+      { imagePath, sr, sc, newColor }
+    );
+  }
+
   sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
     return this.featureDetectionClient.send(
       { cmd: 'canny_edge_detection_image' },
