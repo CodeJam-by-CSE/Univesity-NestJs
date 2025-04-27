@@ -72,3 +72,4 @@ $ npm run test:cov
 - Author 02 - [Suraja Hasarinda](https://github.com/SurajaHasarinda)
 - Author 03 - [Rashmika Rathnayaka](https://github.com/rashG1)
 - Author 04 - [Sithum-Bimsara](https://github.com/Sithum-Bimsara)
+- Author 05 - [Chanuka Chandra Yapa](https://github.com/Chanuka-Chandrayapa)
