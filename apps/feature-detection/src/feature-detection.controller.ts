@@ -18,5 +18,4 @@ export class FeatureDetectionController {
     console.log('Received image for Harris corner detection');
     return await this.featureDetectionService.detectCorners(data.imagePath, data.k, data.windowSize, data.thresh);
   }
-
 }
