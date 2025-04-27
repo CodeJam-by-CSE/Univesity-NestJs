@@ -10,9 +10,9 @@ import * as path from 'path';
 export class NegativeService {
   // Kernel for negative effect
   private readonly kernel = [
-    [-1, 0, 0],
-    [0, -1, 0],
-    [0, 0, -1]
+    [1, 0, 0],
+    [1, -1, 0],
+    [0, 0, 1]
   ];
 
   @MessagePattern({ cmd: 'create_negative' })
