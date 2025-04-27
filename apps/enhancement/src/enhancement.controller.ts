@@ -5,9 +5,8 @@ import { EnhancementService } from './enhancement.service';
 
 @Controller()
 export class EnhancementController {
-  constructor(private readonly enhancementService: EnhancementService) {}
+  constructor(private readonly enhancementService: EnhancementService) { }
 
-  
   @EventPattern({ cmd: 'histogram_equalization_image' })
   async handleHistogramEqualization(imagePath: string) {
     console.log('Received image for histogram equalization');
@@ -18,6 +17,4 @@ export class EnhancementController {
     console.log('Received image for flood fill');
     return await this.enhancementService.floodFill(data.imagePath, data.sr, data.sc, data.newColor);
   }
-
-  
 }
