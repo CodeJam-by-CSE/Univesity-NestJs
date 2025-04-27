@@ -2,7 +2,8 @@ from compare_images import compare_images  # assuming you saved previous functio
 
 def main():
     tests = [
-        ('apps/cse40/expected_images/contrast_20_image.png', 'apps/basic-processing/output_images/contrast_20_image.png', 'Contrast 20')
+        ('apps/cse40/expected_images/contrast_20_image.png', 'apps/basic-processing/output_images/contrast_20_image.png', 'Contrast 20'),
+        ('apps/cse40/expected_images/embossed_standard_1.0.png', 'apps/basic-processing/output_images/embossed_standard_1.0.png')
     ]
 
     total_marks = 0

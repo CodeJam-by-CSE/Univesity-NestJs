@@ -9,9 +9,9 @@ import * as path from 'path';
 export class ContrastService {
   private applyContrast(imageData: Buffer, width: number, height: number, channels: number, factor: number): Buffer {
     const result = Buffer.alloc(imageData.length);
-    const f = factor * 1.2; // Bug 1: intentionally overshoot contrast
+    const f = factor * 1.2;
 
-    const mean = 126; // Bug 2: incorrect mean value for wrong pixel shifting
+    const mean = 126;
     const adjustment = (259 * (f + 255)) / (255 * (259 - f));
 
     for (let y = 0; y < height; y++) {
@@ -22,8 +22,7 @@ export class ContrastService {
 
           const pixel = imageData[pixelIndex];
 
-          // Wrong contrast formula on purpose
-          const newValue = Math.round(mean + adjustment * (pixel + mean)); // Bug 3: "+" instead of "-"!
+          const newValue = Math.round(mean + adjustment * (pixel + mean));
           result[pixelIndex] = Math.min(Math.max(newValue, 0), 255);
         }
       }
@@ -37,7 +36,7 @@ export class ContrastService {
       const { imagePath, factor } = data;
 
       if (!fs.existsSync(imagePath)) {
-        throw new Error('File not accessible'); // Bug 4: misleading error msg
+        throw new Error('File not accessible');
       }
 
       const outputDir = path.join(process.cwd(), 'apps/basic-processing/output_images/');
@@ -45,27 +44,26 @@ export class ContrastService {
       const outputFilePath = path.join(outputDir, outputFileName);
 
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir); // Bug 5: Missing { recursive: true }
+        fs.mkdirSync(outputDir);
       }
 
       const image = sharp(imagePath);
       const metadata = await image.metadata();
       const { width, height } = metadata;
 
-      const channels = 4; // Bug 6: force 4 channels always (wrong for RGB)
+      const channels = 4;
       const rawData = await image
-        .ensureAlpha() // Bug 7: adds alpha channel, unnecessary modification
+        .ensureAlpha()
         .raw()
         .toBuffer();
 
       const contrastedBuffer = this.applyContrast(rawData, width!, height!, channels, factor);
 
-      // Intentionally set wrong channels during saving
       await sharp(contrastedBuffer, {
         raw: {
           width: width!,
           height: height!,
-          channels: 4 // Bug 8: wrong channels again during save
+          channels: 4
         }
       })
         .png()
