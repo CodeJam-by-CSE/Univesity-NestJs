@@ -6,6 +6,7 @@ def main():
         ('apps/cse40/expected_images/embossed_standard_1.0.png', 'apps/basic-processing/output_images/embossed_standard_1.0.png', 'Embossed Standard 1.0'),
         ('apps/cse40/expected_images/greyscale_image.png', 'apps/basic-processing/output_images/greyscale_image.png', 'Greyscale Image'),
         ('apps/cse40/expected_images/negative_image.png', 'apps/basic-processing/output_images/negative_image.png', 'Negative Image'),
+        ('apps/cse40/expected_images/flood_filled_input_image.png', 'apps/enhancement/output_images/flood_filled_input_image.png', 'Flood Filled Input Image'),
     ]
 
     total_marks = 0
