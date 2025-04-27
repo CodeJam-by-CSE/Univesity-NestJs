@@ -55,3 +55,8 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Output images folders in each service
+/app/basic-processing/output/images
+/app/enhancement/output/images
+/app/feature-detection/output/images/processed
