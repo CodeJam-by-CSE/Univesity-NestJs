@@ -67,6 +67,13 @@ export class AppService {
     );
   }
 
+  sendToEnhancementFloodFill(imagePath: string, sr: number, sc: number, newColor: [number, number, number]) {
+    return this.enhancementClient.send(
+      { cmd: 'flood_fill_image' },
+      { imagePath, sr, sc, newColor }
+    );
+  }
+
   sendToFeatureDetectionCannyEdgeDetection(imagePath: string) {
     return this.featureDetectionClient.send(
       { cmd: 'canny_edge_detection_image' },
@@ -76,7 +83,7 @@ export class AppService {
 
   sendToFeatureDetectionHarrisSharp(imagePath: string, k: number = 0.04, windowSize: number = 3, thresh: number = 1e-5) {
     return this.featureDetectionClient.send(
-      { cmd: 'harris_sharp_image' },
+      { cmd: 'harris_corner_detection_image' },
       { imagePath, k, windowSize, thresh }
     );
   }

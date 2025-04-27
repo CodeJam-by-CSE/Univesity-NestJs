@@ -36,7 +36,7 @@ export class CannyEdgeDetectionService {
       const thinEdges = nonMaxSuppression(magnitude, direction, width!, height!);
 
       // Double Threshold
-      const { strongEdges, weakEdges } = doubleThreshold(thinEdges, width!, height!, 20, 40);
+      const { strongEdges, weakEdges } = doubleThreshold(thinEdges, width!, height!, 5, 25);
 
       // Hysteresis
       const finalEdges = hysteresis(strongEdges, weakEdges, width!, height!);
