@@ -24,4 +24,4 @@ jobs:
 
       - name: Run Marking Script
         run: |
-          python run_marking.py
+          python test/run_marking.py
