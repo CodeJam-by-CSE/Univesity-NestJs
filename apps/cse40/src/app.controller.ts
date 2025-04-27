@@ -55,6 +55,23 @@ export class AppController {
     return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
   }
 
+  /**
+ * This microservice controller provides two image enhancement operations:
+ * 
+ * 1. POST /histogram_equalization_image:
+ *    - Accepts an image path.
+ *    - Sends a request to the enhancement service to apply histogram equalization,
+ *      which improves the contrast of the image by redistributing pixel intensity values.
+ * 
+ * 2. POST /flood_fill_image:
+ *    - Accepts an image path, starting coordinates (row and column), and a new RGB color.
+ *    - Sends a request to the enhancement service to perform a flood fill operation,
+ *      changing the connected area starting from the given point to the specified new color.
+ * 
+ * Both endpoints delegate the processing to the mainService, which handles communication 
+ * with the underlying enhancement microservice.
+ */
+
   @Post('histogram_equalization_image')
   async histogramImageEnhancement(@Body() body: { imagePath: string }) {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
