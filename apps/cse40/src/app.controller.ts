@@ -7,7 +7,8 @@ import {
   ContrastDto,
   ImagePathDto,
   RotateImageDto,
-  SharpenImageDto
+  SharpenImageDto,
+  FloodFillDto
 } from './app.dto';
 
 /**
@@ -78,41 +79,53 @@ export class BasicProcessingController {
   }
 }
 
-  /**
- * This microservice controller provides two image enhancement operations:
+/**
+ * Controller for image enhancement operations.
  * 
- * 1. POST /histogram_equalization_image:
- *    - Accepts an image path.
- *    - Sends a request to the enhancement service to apply histogram equalization,
- *      which improves the contrast of the image by redistributing pixel intensity values.
- * 
- * 2. POST /flood_fill_image:
- *    - Accepts an image path, starting coordinates (row and column), and a new RGB color.
- *    - Sends a request to the enhancement service to perform a flood fill operation,
- *      changing the connected area starting from the given point to the specified new color.
- * 
- * Both endpoints delegate the processing to the mainService, which handles communication 
- * with the underlying enhancement microservice.
+ * Handles more advanced image enhancement techniques such as:
+ * - Histogram equalization for improved contrast
  */
+@ApiTags('enhancement')
+@Controller('enhancement')
+export class EnhancementController {
+  constructor(private readonly mainService: AppService) {}
 
-  @Post('histogram_equalization_image')
-  async histogramImageEnhancement(@Body() body: { imagePath: string }) {
+  @Post('histogram-equalization')
+  @ApiOperation({ summary: 'Enhance image using histogram equalization' })
+  @ApiResponse({ status: 200, description: 'Image successfully enhanced' })
+  async histogramImageEnhancement(@Body() body: ImagePathDto) {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
   }
-}
 
   @Post('flood_fill_image')
-  async floodFillImage(@Body() body: { imagePath: string; sr: number; sc: number; newColor: [number, number, number] }) {
+  async floodFillImage(@Body() body: FloodFillDto) {
     return this.mainService.sendToEnhancementFloodFill(body.imagePath, body.sr, body.sc, body.newColor);
-  }
+  } 
+}
 
-  @Post('canny_edge_detection_image')
-  async cannyEdgeDetection(@Body() body: { imagePath: string }) {
+/**
+ * Controller for feature detection operations in images.
+ * 
+ * Handles algorithms for detecting features such as:
+ * - Edge detection using Canny algorithm
+ * - Corner detection using Harris algorithm
+ */
+@ApiTags('feature-detection')
+@Controller('feature-detection')
+export class FeatureDetectionController {
+  constructor(private readonly mainService: AppService) {}
+
+  @Post('canny-edge-detection')
+  @ApiOperation({ summary: 'Detect edges of a given image using Canny algorithm' })
+  @ApiResponse({ status: 200, description: 'Edges successfully detected' })
+  async cannyEdgeDetection(@Body() body: ImagePathDto) {
     return this.mainService.sendToFeatureDetectionCannyEdgeDetection(body.imagePath);
   }
 
-  @Post('harris_corner_detection_image')
-  async harrisSharp(@Body() body: { imagePath: string; k?: number; windowSize?: number; thresh?: number }) {
+  @Post('harris-corner-detection')
+  @ApiOperation({ summary: 'Detect corners in an image using Harris algorithm' })
+  @ApiResponse({ status: 200, description: 'Corners successfully detected' })
+  async harrisSharp(@Body() body: SharpenImageDto) {
     return this.mainService.sendToFeatureDetectionHarrisSharp(body.imagePath, body.k, body.windowSize, body.thresh);
   }
 }
