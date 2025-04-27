@@ -15,15 +15,11 @@ def compare_images(expected_path, generated_path):
     expected_arr = np.array(expected)
     generated_arr = np.array(generated)
     
-    # Calculate pixel-wise difference
-    diff = np.abs(expected_arr - generated_arr)
-    total_diff = np.sum(diff)
+    # Compare pixel-wise equality
+    matches = np.all(expected_arr == generated_arr, axis=-1)  # True where pixel matches (R, G, B all)
+    correct_pixels = np.sum(matches)
+    total_pixels = matches.size
     
-    # Maximum possible difference
-    max_diff = expected_arr.size * 255  # size = width * height * 3 (RGB channels)
-    
-    # Calculate similarity
-    similarity = 1 - (total_diff / max_diff)
-    score = max(0, min(100, round(similarity * 100)))
-    
-    return score
+    # Calculate score
+    score = (correct_pixels / total_pixels) * 100
+    return round(score)
