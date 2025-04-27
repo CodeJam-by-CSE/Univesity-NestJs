@@ -8,10 +8,10 @@ async function bootstrap() {
     EnhancementModule,
     {
       transport: Transport.TCP,
-      options: { host: '127.0.0.1', port: 4001 },
+      options: { host: '127.0.0.1', port: 4002 },
     },
   );
   await app.listen();
-  console.log('✅ Image Processing Microservice is running on port 4001');
+  console.log('✅ Image Processing Feature Detection Microservice is running on port 4002');
 }
 bootstrap();
