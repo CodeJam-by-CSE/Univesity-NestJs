@@ -5,9 +5,7 @@ import { FeatureDetectionService } from './feature-detection.service';
 
 @Controller()
 export class FeatureDetectionController {
-  constructor(private readonly featureDetectionService: FeatureDetectionService) {}
-
-
+  constructor(private readonly featureDetectionService: FeatureDetectionService) { }
 
   @EventPattern({ cmd: 'canny_edge_detection_image' })
   async handleCannyEdgeDetection(imagePath: string) {
@@ -20,5 +18,5 @@ export class FeatureDetectionController {
     console.log('Received image for Harris corner detection');
     return await this.featureDetectionService.detectCorners(data.imagePath, data.k, data.windowSize, data.thresh);
   }
-  
+
 }

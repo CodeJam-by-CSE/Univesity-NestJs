@@ -20,20 +20,28 @@ export function nonMaxSuppression(
       let neighbor1 = 0;
       let neighbor2 = 0;
 
-      if ((angle >= 0 && angle < 22.5) || (angle >= 157.5 && angle <= 180)) {
+      // Angle 0 or 180 degrees
+      if ((0 <= angle && angle < 22.5) || (157.5 <= angle && angle <= 180)) {
         neighbor1 = magnitude[y * width + (x + 1)];
         neighbor2 = magnitude[y * width + (x - 1)];
-      } else if (angle >= 22.5 && angle < 67.5) {
+      }
+      // Angle 45 degrees
+      else if (22.5 <= angle && angle < 67.5) {
         neighbor1 = magnitude[(y - 1) * width + (x + 1)];
         neighbor2 = magnitude[(y + 1) * width + (x - 1)];
-      } else if (angle >= 67.5 && angle < 112.5) {
+      }
+      // Angle 90 degrees
+      else if (67.5 <= angle && angle < 112.5) {
         neighbor1 = magnitude[(y - 1) * width + x];
         neighbor2 = magnitude[(y + 1) * width + x];
-      } else if (angle >= 112.5 && angle < 157.5) {
+      }
+      // Angle 135 degrees
+      else if (112.5 <= angle && angle < 157.5) {
         neighbor1 = magnitude[(y - 1) * width + (x - 1)];
         neighbor2 = magnitude[(y + 1) * width + (x + 1)];
       }
 
+      // Suppress non-maximum values
       output[idx] = (mag >= neighbor1 && mag >= neighbor2) ? mag : 0;
     }
   }
