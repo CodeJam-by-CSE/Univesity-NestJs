@@ -21,8 +21,14 @@ export class BasicProcessingService {
   ) { }
 
   async resizeImage(data: { imagePath: string; width: number; height: number }) {
-    return await this.resizeService.resize(data);
-  }
+      const result = await this.resizeService.resize(data);
+      if (result.success) {
+        return { status: 200, message: 'Image resized successfully', data: result.savedImagePath };
+      }
+      else {
+        return { status: 500, message: 'Failed to resize image', error: result.error };
+      }
+    }
 
   async convertToGreyscale(imagePath: string) {
     return this.greyscaleService.saveGreyscaleImage(imagePath);

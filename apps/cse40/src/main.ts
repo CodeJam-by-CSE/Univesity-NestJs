@@ -9,7 +9,9 @@ async function bootstrap() {
     .setTitle('Image Processing API')
     .setDescription('API endpoints for various image processing operations')
     .setVersion('1.0')
-    .addTag('images')
+    .addTag('basic-processing', 'Basic image processing operations')
+    .addTag('enhancement', 'Image enhancement operations')
+    .addTag('feature-detection', 'Image feature detection operations')
     .build();
     
   const document = SwaggerModule.createDocument(app, config);

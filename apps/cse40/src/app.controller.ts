@@ -10,26 +10,22 @@ import {
   SharpenImageDto
 } from './app.dto';
 
-@ApiTags('images')
-@Controller('images')
-export class AppController {
-  constructor(private readonly mainService: AppService) {}
-
-  /**
- * Controller Endpoints for Basic Image Processing Operations.
+/**
+ * Controller for basic image processing operations.
  *
- * Each endpoint handles a specific image processing task:
- * - resize: Resize an image to specified width and height.
- * - greyscale: Convert an image to greyscale.
- * - negative: Create a negative of the image.
- * - contrast: Adjust the image contrast by a given factor.
- * - rotate: Rotate an image by a given angle.
- * - sharpen: Sharpen the image to enhance details.
- * - emboss: Apply an emboss filter to the image for a 3D effect.
- *
- * All endpoints accept POST requests with necessary parameters in the request body,
- * and delegate the processing tasks to the corresponding methods in the MainService.
+ * Handles fundamental image transformations such as:
+ * - Resizing images
+ * - Converting to greyscale
+ * - Creating negative images
+ * - Adjusting contrast
+ * - Rotating images
+ * - Sharpening images
+ * - Applying emboss effects
  */
+@ApiTags('basic-processing')
+@Controller('basic-processing')
+export class BasicProcessingController {
+  constructor(private readonly mainService: AppService) {}
 
   @Post('resize')
   @ApiOperation({ summary: 'Resize an image to specific dimensions' })
@@ -73,30 +69,56 @@ export class AppController {
   async sharpenImage(@Body() body: ImagePathDto) {
     return this.mainService.sendToBasicProcessingSharpen(body.imagePath);
   }
+
   @Post('emboss')
   @ApiOperation({ summary: 'Apply emboss effect to an image' })
   @ApiResponse({ status: 200, description: 'Emboss effect successfully applied' })
   async embossImage(@Body() body: ImagePathDto) {
     return this.mainService.sendToBasicProcessingEmboss(body.imagePath);
   }
+}
 
-  @Post('histogram_equalization_image')
+/**
+ * Controller for image enhancement operations.
+ * 
+ * Handles more advanced image enhancement techniques such as:
+ * - Histogram equalization for improved contrast
+ */
+@ApiTags('enhancement')
+@Controller('enhancement')
+export class EnhancementController {
+  constructor(private readonly mainService: AppService) {}
+
+  @Post('histogram-equalization')
   @ApiOperation({ summary: 'Enhance image using histogram equalization' })
   @ApiResponse({ status: 200, description: 'Image successfully enhanced' })
   async histogramImageEnhancement(@Body() body: ImagePathDto) {
     return this.mainService.sendToEnhancementHistogram(body.imagePath);
   }
+}
 
-  @Post('canny_edge_detection_image')
-  @ApiOperation({ summary: 'Detect edges of a given image' })
+/**
+ * Controller for feature detection operations in images.
+ * 
+ * Handles algorithms for detecting features such as:
+ * - Edge detection using Canny algorithm
+ * - Corner detection using Harris algorithm
+ */
+@ApiTags('feature-detection')
+@Controller('feature-detection')
+export class FeatureDetectionController {
+  constructor(private readonly mainService: AppService) {}
+
+  @Post('canny-edge-detection')
+  @ApiOperation({ summary: 'Detect edges of a given image using Canny algorithm' })
   @ApiResponse({ status: 200, description: 'Edges successfully detected' })
   async cannyEdgeDetection(@Body() body: ImagePathDto) {
     return this.mainService.sendToFeatureDetectionCannyEdgeDetection(body.imagePath);
   }
 
-  @Post('harris_sharp_image')
-  @ApiOperation({ summary: 'Sharpen a given image' })
-  @ApiResponse({ status: 200, description: 'Image successfully sharpened' })
+  @Post('harris-corner-detection')
+  @ApiOperation({ summary: 'Detect corners in an image using Harris algorithm' })
+  @ApiResponse({ status: 200, description: 'Corners successfully detected' })
   async harrisSharp(@Body() body: SharpenImageDto) {
     return this.mainService.sendToFeatureDetectionHarrisSharp(body.imagePath, body.k, body.windowSize, body.thresh);
   }
