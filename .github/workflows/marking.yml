@@ -3,7 +3,7 @@ name: Auto Marking
 on:
   push:
     branches:
-      - Bug-Branch  # or whatever your main branch is
+      - '**'
 
 jobs:
   run-marking:
