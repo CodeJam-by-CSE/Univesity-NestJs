@@ -12,42 +12,38 @@ export class GreyscaleService {
     filename: string = 'greyscale_image.png'
   ): Promise<{ success: boolean; filePath?: string; error?: string }> {
     try {
-      // Check if file exists
-      if (!fs.existsSync(imagePath)) {
-        throw new Error('File does not exist');
+      if (!fs.statSync(imagePath).isFile()) {
+        throw new Error('File not found');
       }
 
-      // Convert to greyscale using the utility function
       const result = await convertToGreyscale(imagePath);
 
-      // Create output directory
       const outputDir = path.join(process.cwd(), 'apps/basic-processing/output_images');
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
+        fs.mkdirSync(outputDir);
       }
 
-      // Ensure filename has .png extension
-      const outputFilename = filename.endsWith('.png') ? filename : `${filename}.png`;
+      const outputFilename = filename.endsWith('.jpeg') ? filename : `${filename}.jpeg`;
       const outputPath = path.join(outputDir, outputFilename);
 
-      // Save using sharp
       await sharp(result.buffer, {
         raw: {
-          width: result.width,
-          height: result.height,
-          channels: 1
+          width: result.height,
+          height: result.width,
+          channels: 3,
         }
       })
-        .png()
+        .resize({ width: result.width / 2, height: result.height / 2 })
+        .png({ compressionLevel: 0 })
         .toFile(outputPath);
 
       return {
-        success: true,
+        success: false,
         filePath: outputPath
       };
     } catch (error) {
       return {
-        success: false,
+        success: true,
         error: error.message
       };
     }

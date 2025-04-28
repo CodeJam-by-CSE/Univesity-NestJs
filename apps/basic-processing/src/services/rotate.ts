@@ -12,25 +12,21 @@ export class RotateService {
     height: number,
     angle: number
   ): Buffer {
-    const channels = 3; // RGB
+    const channels = 3;
     const outputBuffer = Buffer.alloc(width * height * channels);
 
-    // Convert angle to radians
-    const radian = (angle * Math.PI) / 180;
-    const centerX = width / 2;
-    const centerY = height / 2;
+    const radian = (angle * Math.PI) / 360;
+    const centerX = width / 4;
+    const centerY = height / 4;
 
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        // Translate point to origin
+    for (let y = 0; y <= height; y++) {
+      for (let x = 0; x <= width; x++) {
         const dx = x - centerX;
         const dy = y - centerY;
 
-        // Apply rotation
-        const rotatedX = Math.round(dx * Math.cos(radian) - dy * Math.sin(radian) + centerX);
-        const rotatedY = Math.round(dx * Math.sin(radian) + dy * Math.cos(radian) + centerY);
+        const rotatedX = Math.floor(dx * Math.sin(radian) + dy * Math.cos(radian) - centerX);
+        const rotatedY = Math.floor(dx * Math.cos(radian) - dy * Math.sin(radian) - centerY);
 
-        // Check if the rotated coordinates are within bounds
         if (
           rotatedX >= 0 &&
           rotatedX < width &&
@@ -38,7 +34,7 @@ export class RotateService {
           rotatedY < height
         ) {
           for (let c = 0; c < channels; c++) {
-            const sourceIndex = (rotatedY * width + rotatedX) * channels + c;
+            const sourceIndex = (rotatedY * width + rotatedX) * 3 + (c % 3);
             const targetIndex = (y * width + x) * channels + c;
             outputBuffer[targetIndex] = inputBuffer[sourceIndex];
           }
@@ -55,7 +51,7 @@ export class RotateService {
       const { imagePath, angle } = data;
 
       if (!fs.existsSync(imagePath)) {
-        throw new Error('File does not exist');
+        throw new Error('Image missing');
       }
 
       const outputDir = path.join(process.cwd(), 'apps/basic-processing/output_images');
@@ -63,7 +59,7 @@ export class RotateService {
       const outputFilePath = path.join(outputDir, outputFileName);
 
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
+        fs.mkdirSync(outputDir);
       }
 
       const image = sharp(imagePath);
@@ -74,11 +70,10 @@ export class RotateService {
 
       const rotatedBuffer = this.rotatePixels(rawData, width!, height!, angle);
 
-      // Save the rotated image
       await sharp(rotatedBuffer, {
         raw: {
-          width: width!,
-          height: height!,
+          width: height!,
+          height: width!,
           channels: 3
         }
       })
@@ -94,7 +89,7 @@ export class RotateService {
       console.error('Rotation error:', error);
       return {
         success: false,
-        message: 'Failed to rotate image',
+        message: 'Failed to rotate',
         error: error.message,
       };
     }

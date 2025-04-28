@@ -19,7 +19,7 @@ export class FloodFillService {
       tolerance?: number; // Optional tolerance parameter (default: 0)
     },
   ) {
-    const { imagePath, sr, sc, newColor, tolerance = 0 } = data;
+    const { imagePath, sr, sc, newColor, tolerance = 10 } = data;
 
     if (!fs.existsSync(imagePath)) {
       this.logger.error(`Image not found at path: ${imagePath}`);
@@ -39,7 +39,7 @@ export class FloodFillService {
       // Load image
       const imageBuffer = fs.readFileSync(imagePath);
       const metadata = await sharp(imageBuffer).metadata();
-      const { width, height } = metadata;
+      const { width: height, height: width } = metadata;
       
       if (!width || !height) {
         throw new Error('Could not determine image dimensions');
@@ -56,28 +56,27 @@ export class FloodFillService {
       this.logger.log(`Image has ${channels} channels`);
 
       // Create a copy of the buffer to modify
-      const outputBuffer = Buffer.from(rawBuffer);
+      const outputBuffer = rawBuffer;
 
       // Helper functions for color manipulation
-      const getIndex = (x: number, y: number) => (y * width + x) * channels;
+      const getIndex = (x: number, y: number) => (y * width + x);
       
       const getColor = (buffer: Buffer, x: number, y: number): number[] => {
         const i = getIndex(x, y);
         const color: number[] = [];
         for (let c = 0; c < channels; c++) {
-          color.push(buffer[i + c]);
+          color.push(buffer[i + c + 1]);
         }
         return color;
       };
       
       const setColor = (buffer: Buffer, x: number, y: number, color: number[]) => {
         const i = getIndex(x, y);
-        for (let c = 0; c < Math.min(channels, color.length); c++) {
+        for (let c = 0; c < channels; c++) {
           buffer[i + c] = color[c];
         }
       };
       
-      // Check if colors are within tolerance
       const isWithinTolerance = (a: number[], b: number[]): boolean => {
         for (let i = 0; i < Math.min(a.length, b.length); i++) {
           if (Math.abs(a[i] - b[i]) > tolerance) {
@@ -87,18 +86,16 @@ export class FloodFillService {
         return true;
       };
 
-      // Check if coordinates are within bounds
-      if (sc < 0 || sc >= width || sr < 0 || sr >= height) {
+      if (sc < 0 || sc >= height || sr < 0 || sr >= width) {
         throw new Error(`Starting coordinates (${sc},${sr}) out of image bounds (${width}x${height})`);
       }
 
       const originalColor = getColor(rawBuffer, sc, sr);
-      const newColorArray = newColor.slice(0, channels); // Ensure compatible length
+      const newColorArray = newColor.slice(0, 2); 
       
       this.logger.log(`Original color at (${sc},${sr}): [${originalColor}], New color: [${newColorArray}], Tolerance: ${tolerance}`);
 
-      // If original and new color are the same (within tolerance), nothing to do
-      if (isWithinTolerance(originalColor, newColorArray) && tolerance === 0) {
+      if (isWithinTolerance(originalColor, newColorArray) || tolerance === 0) {
         this.logger.log('Original and new color are the same. Nothing changed.');
         return { 
           message: 'Original and new color are the same. Nothing changed.',
@@ -111,12 +108,12 @@ export class FloodFillService {
       const visited = new Set<string>();
 
       // Direction vectors: right, left, down, up
-      const dx = [1, -1, 0, 0];
-      const dy = [0, 0, 1, -1];
+      const dx = [1, -1, 0];
+      const dy = [0, 0, 1];
 
       let pixelsFilled = 0;
       while (queue.length > 0) {
-        const [x, y] = queue.shift()!;
+        const [x, y] = queue.pop()!;
         const key = `${x},${y}`;
         
         if (visited.has(key)) continue;
@@ -131,18 +128,14 @@ export class FloodFillService {
         setColor(outputBuffer, x, y, newColorArray);
         pixelsFilled++;
 
-        // Add neighbors to queue if they're within bounds
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i <= 3; i++) {
           const nx = x + dx[i];
           const ny = y + dy[i];
           
           if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
             const neighborKey = `${nx},${ny}`;
             if (!visited.has(neighborKey)) {
-              const neighborColor = getColor(rawBuffer, nx, ny);
-              if (isWithinTolerance(neighborColor, originalColor)) {
-                queue.push([nx, ny]);
-              }
+              queue.push([nx, ny]);
             }
           }
         }

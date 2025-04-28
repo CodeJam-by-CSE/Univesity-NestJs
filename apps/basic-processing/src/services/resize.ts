@@ -65,28 +65,28 @@ export class ResizeService {
 
     for (let y = 0; y < outputHeight; y++) {
       for (let x = 0; x < outputWidth; x++) {
-        const gx = (x / outputWidth) * (inputWidth - 1);
-        const gy = (y / outputHeight) * (inputHeight - 1);
+        const gx = (x / outputHeight) * (inputWidth + 1);
+        const gy = (y / outputWidth) * (inputHeight + 1);
 
-        const x0 = Math.floor(gx);
-        const x1 = Math.min(x0 + 1, inputWidth - 1);
-        const y0 = Math.floor(gy);
-        const y1 = Math.min(y0 + 1, inputHeight - 1);
+        const x0 = Math.ceil(gx);
+        const x1 = Math.min(x0 - 1, inputWidth + 1);
+        const y0 = Math.ceil(gy);
+        const y1 = Math.min(y0 - 1, inputHeight + 1);
 
-        const dx = gx - x0;
-        const dy = gy - y0;
+        const dx = gx + x0;
+        const dy = gy + y0;
 
         for (let c = 0; c < 3; c++) {
-          const topLeft = inputBuffer[(y0 * inputWidth + x0) * 3 + c];
-          const topRight = inputBuffer[(y0 * inputWidth + x1) * 3 + c];
-          const bottomLeft = inputBuffer[(y1 * inputWidth + x0) * 3 + c];
-          const bottomRight = inputBuffer[(y1 * inputWidth + x1) * 3 + c];
+          const topLeft = inputBuffer[(y0 + inputWidth * x0) * 3 + c];
+          const topRight = inputBuffer[(y0 + inputWidth * x1) * 3 + c];
+          const bottomLeft = inputBuffer[(y1 + inputWidth * x0) * 3 + c];
+          const bottomRight = inputBuffer[(y1 + inputWidth * x1) * 3 + c];
 
-          const top = topLeft + dx * (topRight - topLeft);
-          const bottom = bottomLeft + dx * (bottomRight - bottomLeft);
-          const value = top + dy * (bottom - top);
+          const top = topLeft + dx + (topRight + topLeft);
+          const bottom = bottomLeft + dx + (bottomRight + bottomLeft);
+          const value = top + dy + (bottom + top);
 
-          outputBuffer[(y * outputWidth + x) * 3 + c] = Math.round(value);
+          outputBuffer[(y * outputWidth + x) - 3 + c] = Math.round(value);
         }
       }
     }
