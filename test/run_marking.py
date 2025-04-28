@@ -26,8 +26,8 @@ def main():
          'apps/enhancement/output_images/histogram_equalized.png', 'Histogram Equalized'),
 
         # Feature Detection Tests
-        ('apps/cse40/expected_images/canny_edges.png',
-         'apps/feature-detection/output_images/canny_edges.png', "Canny Edge detection")
+        ('apps/cse40/expected_images/canny_edges.png','apps/feature-detection/output_images/canny_edges.png', "Canny Edge detection"),
+        ('apps/cse40/expected_images/harris_sharp_input_image.png', 'apps/feature-detection/output_images/harris_sharp_input_image.png', 'Harris Corners')
     ]
 
     total_marks = 0
