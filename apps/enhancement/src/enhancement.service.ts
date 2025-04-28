@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
-import { HistogramEqualizationService } from './services/histrogramEqualization.service';
-import { FloodFillService } from './services/floodfill.service';
+import { HistogramEqualizationService } from './services/histrogramEqualization';
+import { FloodFillService } from './services/floodfill';
 
 @Injectable()
 export class EnhancementService {
