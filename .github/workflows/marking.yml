@@ -25,12 +25,10 @@ jobs:
 
       - name: Install Backend Dependencies
         run: |
-          ls
           npm install
 
       - name: Start NestJS Backend
         run: |
-          cd backend
           npm run start & npm run start:basic-processing
         shell: bash
 
