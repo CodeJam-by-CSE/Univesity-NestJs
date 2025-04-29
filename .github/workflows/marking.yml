@@ -25,7 +25,7 @@ jobs:
 
       - name: Install Backend Dependencies
         run: |
-          cd backend
+          cd Univesity-NestJs
           npm install
 
       - name: Start NestJS Backend
