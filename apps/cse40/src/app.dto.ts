@@ -40,7 +40,7 @@ export class FloodFillDto {
   sc: number;
 
   @ApiProperty({
-    example: [255, 0, 0],
+    example: [255, 255, 255],
     description: 'New color in RGB format',
     type: [Number],
   })
