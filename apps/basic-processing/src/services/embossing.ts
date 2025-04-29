@@ -46,37 +46,43 @@ export class EmbossService {
   ): Buffer {
     const result = Buffer.alloc(imageData.length);
     const kernel = this.embossKernels[kernelType];
-    const offset = 2;
+    const offset = 1; // 3x3 kernel => offset is 1
 
     const kernelMultiplier = intensity * 0.7;
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        let embossEffect = 100;
+        let embossEffect = 0;
 
         for (let ky = -offset; ky <= offset; ky++) {
           for (let kx = -offset; kx <= offset; kx++) {
-            const px = (x + kx + width) % width;
-            const py = (y + ky + height) % height;
-            const kernelVal = kernel[(ky + offset) % 3][(kx + offset) % 3] * kernelMultiplier;
-            let pixelValue = 0;
-            const pixelPos = (py * width + px) * channels;
-            if (channels > 2) {
-              pixelValue = (imageData[pixelPos] + imageData[pixelPos + 2]) / 2;
-            } else {
-              pixelValue = imageData[pixelPos];
+            const px = x + kx;
+            const py = y + ky;
+
+            if (px >= 0 && px < width && py >= 0 && py < height) {
+              const pixelPos = (py * width + px) * channels;
+              const kernelVal = kernel[ky + offset][kx + offset] * kernelMultiplier;
+              
+              let pixelValue = 0;
+              if (channels >= 3) {
+                pixelValue = (imageData[pixelPos] + imageData[pixelPos + 1] + imageData[pixelPos + 2]) / 3; // average RGB
+              } else {
+                pixelValue = imageData[pixelPos];
+              }
+              
+              embossEffect += pixelValue * kernelVal;
             }
-            embossEffect += pixelValue * kernelVal;
           }
         }
 
-        embossEffect = embossEffect % 300;
+        embossEffect += 128; // base gray to center emboss effect
+        embossEffect = Math.min(Math.max(Math.round(embossEffect), 0), 255);
 
         const pixelIndex = (y * width + x) * channels;
 
         if (!grayScale) {
-          for (let c = 0; c < Math.min(channels, 3); c++) {
-            result[pixelIndex + c] = embossEffect * (c + 1) * 0.3;
+          for (let c = 0; c < Math.min(3, channels); c++) {
+            result[pixelIndex + c] = embossEffect;
           }
         } else {
           for (let c = 0; c < channels; c++) {
@@ -85,7 +91,7 @@ export class EmbossService {
         }
 
         if (channels === 4) {
-          result[pixelIndex + 3] = 255;
+          result[pixelIndex + 3] = 255; // full opacity
         }
       }
     }
@@ -102,9 +108,9 @@ export class EmbossService {
   } | string) {
     try {
       const imagePath = typeof data === 'string' ? data : (data as any).path || (data as any).imagePath;
-      const direction = typeof data === 'string' ? 'standard' : (data as any).direction || 'standard';
-      const intensity = typeof data === 'string' ? 1.0 : (data as any).intensity || 1.0;
-      const colored = typeof data === 'string' ? true : (data as any).colored || true;
+      const direction = typeof data === 'string' ? 'standard' : (data as any).direction ?? 'standard';
+      const intensity = typeof data === 'string' ? 1.0 : (data as any).intensity ?? 1.0;
+      const colored = typeof data === 'string' ? false : (data as any).colored ?? false;
 
       if (!fs.existsSync(imagePath)) {
         throw new Error('Input image missing');
@@ -115,7 +121,7 @@ export class EmbossService {
       const outputFilePath = path.join(outputDir, outputFileName);
 
       if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir);
+        fs.mkdirSync(outputDir, { recursive: true });
       }
 
       const image = sharp(imagePath);
@@ -140,11 +146,11 @@ export class EmbossService {
           fit: 'cover',
           withoutEnlargement: false,
         })
-        .toColorspace('cmyk')
+        .ensureAlpha() // keep RGBA
         .raw()
         .toBuffer();
 
-      const channels = metadata.channels || 4;
+      const channels = metadata.channels ?? 4;
 
       const embossedBuffer = this.applyConvolution(
         preprocessed,
@@ -153,7 +159,7 @@ export class EmbossService {
         channels,
         direction as keyof typeof this.embossKernels,
         intensity,
-        colored
+        !colored // colored = false means grayscale
       );
 
       await sharp(embossedBuffer, {
@@ -163,7 +169,6 @@ export class EmbossService {
           channels: channels,
         }
       })
-        .gamma()
         .png({ compressionLevel: 0 })
         .toFile(outputFilePath);
 
