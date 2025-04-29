@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ResizeImageDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -22,7 +22,7 @@ export class ResizeImageDto {
 
 export class FloodFillDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -49,7 +49,7 @@ export class FloodFillDto {
 
 export class GreyscaleDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -57,7 +57,7 @@ export class GreyscaleDto {
 
 export class ContrastDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -71,7 +71,7 @@ export class ContrastDto {
 
 export class ImagePathDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -79,7 +79,7 @@ export class ImagePathDto {
 
 export class RotateImageDto {
   @ApiProperty({
-    example: '/path/to/image.jpg',
+    example: 'apps/cse40/images/input_image.png',
     description: 'Path to the image file',
   })
   imagePath: string;
@@ -92,30 +92,30 @@ export class RotateImageDto {
 }
 
 export class SharpenImageDto {
-    @ApiProperty({
-      example: '/path/to/image.jpg',
-      description: 'Path to the image file',
-    })
-    imagePath: string;
-  
-    @ApiProperty({
-      example: 0.04,
-      description: 'Harris detector free parameter in the equation',
-      required: false,
-    })
-    k?: number;
+  @ApiProperty({
+    example: 'apps/cse40/images/input_image.png',
+    description: 'Path to the image file',
+  })
+  imagePath: string;
 
-    @ApiProperty({
-        example: 3,
-        description: 'Size of the window for corner detection',
-        required: false,
-      })
-      windowSize: number;
+  @ApiProperty({
+    example: 0.04,
+    description: 'Harris detector free parameter in the equation',
+    required: false,
+  })
+  k?: number;
 
-      @ApiProperty({
-        example: 100,
-        description: 'Threshold value for corner detection',
-        required: false,
-      })
-      thresh: number;
-  }
+  @ApiProperty({
+    example: 3,
+    description: 'Size of the window for corner detection',
+    required: false,
+  })
+  windowSize: number;
+
+  @ApiProperty({
+    example: 100,
+    description: 'Threshold value for corner detection',
+    required: false,
+  })
+  thresh: number;
+}
