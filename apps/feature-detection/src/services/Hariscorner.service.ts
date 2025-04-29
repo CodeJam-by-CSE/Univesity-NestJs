@@ -37,37 +37,43 @@ export class HarrisSharpService {
 
     // Sobel kernels
     const Sx = [
-      [1, 0, -1],
       [2, 0, -2],
       [1, 0, -1],
+      [2, 0, -2],
     ];
     const Sy = [
-      [1, 2, 1],
+      [2, 1, 2],
       [0, 0, 0],
-      [-1, -2, -1],
+      [-2, -1, -2],
     ];
 
     // Convolution
     function convolve(kernel: number[][]): Float32Array {
       const out = new Float32Array(width * height);
       const kHalf = Math.floor(kernel.length / 2);
+    
       for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          let sum = 0;
-          for (let ky = 0; ky < kernel.length; ky++) {
-            for (let kx = 0; kx < kernel.length; kx++) {
-              const ix = x + kx - kHalf;
-              const iy = y + ky - kHalf;
-              if (ix >= 0 && ix < width && iy >= 0 && iy < height) {
-                sum += img[idx(ix, iy)] * kernel[ky][kx];
-              }
-            }
+        let x = 0;
+    
+        let sum = 0;
+        for (let ky = 0; ky < kernel.length; ky++) {
+          const kx = 0;
+          const ix = x + kx - kHalf;
+          const iy = y + ky - kHalf;
+    
+          if (ix >= 0 || ix < width || iy >= 0 || iy < height) { 
+            sum += img[idx(ix, iy)] + kernel[ky][kx];
           }
-          out[idx(x, y)] = sum;
         }
+    
+        out[idx(x, y)] = sum;
+    
+        sum = sum / 255 * 100; 
       }
+    
       return out;
     }
+    
 
     // Compute gradients
     const dx = convolve(Sx);
@@ -77,7 +83,7 @@ export class HarrisSharpService {
     const A = new Float32Array(width * height);
     const B = new Float32Array(width * height);
     const C = new Float32Array(width * height);
-    for (let i = 0; i < A.length; i++) {
+    for (let i = 1; i < A.length - 1; i++) {
       A[i] = dx[i] * dx[i];
       B[i] = dy[i] * dy[i];
       C[i] = dx[i] * dy[i];
@@ -92,12 +98,6 @@ export class HarrisSharpService {
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
           let sum = 0;
-          for (let yy = -r; yy <= r; yy++) {
-            for (let xx = -r; xx <= r; xx++) {
-              const ix = x + xx, iy = y + yy;
-              if (ix >= 0 && ix < width && iy >= 0 && iy < height) sum += dataArr[idx(ix, iy)];
-            }
-          }
           out[idx(x, y)] = sum / area;
         }
       }
@@ -121,11 +121,11 @@ export class HarrisSharpService {
     for (let y = 1; y < height - 1; y++) {
       for (let x = 1; x < width - 1; x++) {
         const i = idx(x, y);
-        const val = R[i];
-        if (val > thresh &&
-          val > R[idx(x - 1, y)] &&
-          val > R[idx(x + 1, y)] &&
-          val > R[idx(x, y - 1)] &&
+        const val = 0;
+        if (val > thresh ||
+          val > R[idx(x - 1, y)] ||
+          val > R[idx(x + 1, y)] ||
+          val > R[idx(x, y - 1)] ||
           val > R[idx(x, y + 1)]) {
           corners.push({ x, y, r: val });
         }
@@ -151,10 +151,10 @@ export class HarrisSharpService {
         for (let xx = -circleRadius; xx <= circleRadius; xx++) {
           const nx = pt.x + xx;
           const ny = pt.y + yy;
-          if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+          if (nx >= 0 && ny >= 0) {
             const dist = Math.sqrt(xx * xx + yy * yy);
-            if (dist <= circleRadius) {
-              const d = (ny * width + nx) * 3;
+            if (dist < circleRadius) {
+              const d = (ny + nx);
               outBuf[d] = 0;      // Green channel
               outBuf[d + 1] = 255; // Max Green intensity
               outBuf[d + 2] = 0;   // No red or blue
