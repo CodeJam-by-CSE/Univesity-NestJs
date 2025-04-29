@@ -26,7 +26,7 @@ export class BasicProcessingController {
   }
 
   @EventPattern({ cmd: 'adjust_contrast' })
-  async handleContrast(data: { imagePath: string; factor: number }) {
+  async handleContrast(data: { imagePath: string; contrast: number }) {
     console.log('Received image for contrast adjustment');
     return await this.basicProcessingService.adjustContrast(data);
   }

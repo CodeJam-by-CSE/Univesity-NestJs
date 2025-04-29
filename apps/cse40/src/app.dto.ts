@@ -63,10 +63,10 @@ export class ContrastDto {
   imagePath: string;
 
   @ApiProperty({
-    example: 1.5,
+    example: 20,
     description: 'Contrast factor (values > 1 increase contrast, values < 1 decrease contrast)',
   })
-  factor: number;
+  contrast: number;
 }
 
 export class ImagePathDto {

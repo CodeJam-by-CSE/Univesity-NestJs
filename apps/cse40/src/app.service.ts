@@ -33,10 +33,10 @@ export class AppService {
     );
   }
 
-  sendToBasicProcessingContrast(imagePath: string, factor: number) {
+  sendToBasicProcessingContrast(imagePath: string, contrast: number) {
     return this.basicProcessingClient.send(
       { cmd: 'adjust_contrast' },
-      { imagePath, factor }
+      { imagePath, contrast }
     );
   }
 
