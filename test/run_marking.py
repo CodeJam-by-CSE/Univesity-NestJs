@@ -6,8 +6,8 @@ def main():
         # Basic Processing Tests
         ('apps/cse40/expected_images/contrast_20_image.png',
          'apps/basic-processing/output_images/contrast_20_image.png', 'Contrast 20'),
-        ('apps/cse40/expected_images/embossed_standard_1.0.png',
-         'apps/basic-processing/output_images/embossed_standard_1.0.png', 'Embossed Standard 1.0'),
+        ('apps/cse40/expected_images/emboss_image.png',
+         'apps/basic-processing/output_images/emboss_image.png', 'Embossed Standard 1.0'),
         ('apps/cse40/expected_images/greyscale_image.png',
          'apps/basic-processing/output_images/greyscale_image.png', 'Greyscale Image'),
         ('apps/cse40/expected_images/negative_image.png',
