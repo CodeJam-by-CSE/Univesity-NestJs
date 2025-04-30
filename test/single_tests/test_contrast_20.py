@@ -1,0 +1,11 @@
+from compare_images import compare_images
+
+def main():
+    try:
+        score = compare_images("apps/cse40/expected_images/contrast_20_image.png", "apps/basic-processing/output_images/contrast_20_image.png")
+        print("contrast_20: {} marks".format(score))
+    except Exception as e:
+        print("contrast_20: Error ({})".format(e))
+
+if __name__ == "__main__":
+    main()
