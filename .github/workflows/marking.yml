@@ -27,10 +27,15 @@ jobs:
         run: |
           npm install
 
-      - name: Start NestJS Services in Background
+      - name: Install Concurrently
         run: |
-          npm run start & npm run start:basic-processing
-          sleep 15  # Wait for microservices to start
+          npm install concurrently
+
+      - name: Start All NestJS Services
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          sleep 15
 
       - name: Check API Endpoints
         run: |
