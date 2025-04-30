@@ -6,7 +6,8 @@ on:
       - '**'
 
 jobs:
-  run-marking:
+  setup-and-test:
+    name: Setup Environment and Test APIs
     runs-on: ubuntu-latest
     services:
       redis:
@@ -35,12 +36,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install pillow numpy httpx
 
-      - name: Start Services, Check APIs, and Run Tests
+      - name: Start Services
         run: |
-          # Start NestJS services in the background
           npx concurrently "npm run start" "npm run start:basic-processing" &
-
-          # Wait for the ports to open
           echo "Waiting for services to start..."
           for i in {1..30}; do
             nc -z localhost 3000 && nc -z localhost 4001 && break
@@ -52,10 +50,49 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
 
-          echo "✅ APIs are reachable and responding to requests"
+          echo "✅ Services up and test input accepted"
 
-          # Run Python test scripts
-          for file in test/single_tests/test_*.py; do
-            echo "Running $file"
-            python "$file"
-          done
+      - name: Cache Services Log File
+        if: always()
+        run: sleep 5
+
+  # Individual Test Jobs (depend on setup-and-test)
+  test-contrast-20:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Contrast 20 Test
+        run: python test/single_tests/test_contrast_20.py
+
+  test-greyscale:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Greyscale Test
+        run: python test/single_tests/test_greyscale.py
+
+  # Add more test jobs following the same pattern...
+  test-negative:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Negative Image Test
+        run: python test/single_tests/test_negative.py
