@@ -23,38 +23,37 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Node Dependencies
-        run: |
-          npm install
-
-      - name: Install Concurrently
-        run: |
-          npm install concurrently
-
-      - name: Start All NestJS Services
-        run: |
-          npx concurrently "npm run start" "npm run start:basic-processing" &
-          echo "Waiting for services to start..."
-          sleep 15
-
-      - name: Check API Endpoints
-        run: |
-          curl --fail http://localhost:3000 || exit 1
-          curl --fail http://localhost:4001 || exit 1
-          echo "✅ APIs are reachable"
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install Python Dependencies
+      - name: Install Dependencies
         run: |
+          npm install
+          npm install concurrently
           python -m pip install --upgrade pip
           pip install pillow numpy httpx
 
-      - name: Run All Test Scripts
+      - name: Start Services, Check APIs, and Run Tests
         run: |
+          # Start NestJS services in the background
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+
+          # Wait for the ports to open
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000 and 4001..."
+            sleep 1
+          done
+
+          # Check API Endpoints
+          curl --fail http://localhost:3000 || exit 1
+          curl --fail http://localhost:4001 || exit 1
+          echo "✅ APIs are reachable"
+
+          # Run Python test scripts
           for file in test/single_tests/test_*.py; do
             echo "Running $file"
             python "$file"
