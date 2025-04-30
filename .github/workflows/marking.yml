@@ -48,10 +48,11 @@ jobs:
             sleep 1
           done
 
-          # Check API Endpoints
-          curl --fail http://localhost:3000 || exit 1
-          curl --fail http://localhost:4001 || exit 1
-          echo "✅ APIs are reachable"
+          curl --fail -X POST http://localhost:3000/basic-processing/greyscale \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+
+          echo "✅ APIs are reachable and responding to requests"
 
           # Run Python test scripts
           for file in test/single_tests/test_*.py; do
