@@ -48,7 +48,7 @@ jobs:
             sleep 1
           done
 
-          curl --fail -X POST http://localhost:3000/basic-processing/greyscale \
+          curl --fail -X POST http://localhost:3000/basic-processing/negative \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
 
