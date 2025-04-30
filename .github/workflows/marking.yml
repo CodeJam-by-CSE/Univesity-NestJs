@@ -8,19 +8,45 @@ on:
 jobs:
   run-marking:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Node Dependencies
+        run: |
+          npm install
+
+      - name: Start NestJS Services in Background
+        run: |
+          npm run start & npm run start:basic-processing
+          sleep 15  # Wait for microservices to start
+
+      - name: Check API Endpoints
+        run: |
+          curl --fail http://localhost:3000 || exit 1
+          curl --fail http://localhost:4001 || exit 1
+          echo "✅ APIs are reachable"
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pillow numpy
+          pip install pillow numpy httpx
 
       - name: Run All Test Scripts
         run: |
