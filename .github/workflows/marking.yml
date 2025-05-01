@@ -39,7 +39,7 @@ jobs:
       - name: Download input image
         run: |
           cd apps/cse40/images
-          wget -O input_image.png https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=bd2910ec-f548-4b2f-bfb6-2b5e05df230f 
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
 
 
       - name: Start Services
