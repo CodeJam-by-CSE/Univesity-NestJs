@@ -3,7 +3,7 @@ import sys
 
 def main():
     try:
-        score = compare_images("/home/runner/work/Univesity-NestJs/Univesity-NestJs/apps/cse40/expected_images/resized_image.png", "/home/runner/work/Univesity-NestJs/Univesity-NestJs/apps/basic-processing/output_images/resized_image.png")
+        score = compare_images("apps/cse40/expected_images/resized_image.png", "apps/basic-processing/output_images/resized_image.png")
         print("resized_image: {} marks".format(score))
         if score < 0.95:
             print("resized_image: Test failed, images are not similar enough.")
