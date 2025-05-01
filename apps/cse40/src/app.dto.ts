@@ -113,7 +113,7 @@ export class SharpenImageDto {
   windowSize: number;
 
   @ApiProperty({
-    example: 100,
+    example: 1e-5,
     description: 'Threshold value for corner detection',
     required: false,
   })

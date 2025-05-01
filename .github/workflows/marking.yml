@@ -46,10 +46,50 @@ jobs:
             sleep 1
           done
 
+          curl --fail -X POST http://localhost:3000/basic-processing/resize \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "width": 800, "height": 600}' || exit 1
+
+          curl --fail -X POST http://localhost:3000/basic-processing/greyscale \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+
           curl --fail -X POST http://localhost:3000/basic-processing/negative \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
 
+          curl --fail -X POST http://localhost:3000/basic-processing/contrast \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "contrast": 20}' || exit 1
+
+          curl --fail -X POST http://localhost:3000/basic-processing/rotate \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "angle": 90}' || exit 1
+          
+          curl --fail -X POST http://localhost:3000/basic-processing/sharpen \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+          
+          curl --fail -X POST http://localhost:3000/basic-processing/emboss \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+          
+          curl --fail -X POST http://localhost:3000/basic-processing/histogram-equalization \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+          
+          curl --fail -X POST http://localhost:3000/basic-processing/flood_fill_image \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "sr": 400, "sc": 250, "newColor": "[255, 0, 0]"}' || exit 1
+
+          curl --fail -X POST http://localhost:3000/basic-processing/canny-edge-detection \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+          
+          curl --fail -X POST http://localhost:3000/basic-processing/harris-corner-detection \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "k": 0.04, "windowSize": "3", "thresh": 0.00001}' || exit 1
+          
           echo "✅ Services up and test input accepted"
 
       - name: Cache Services Log File
@@ -57,7 +97,7 @@ jobs:
         run: sleep 5
 
   # Individual Test Jobs (depend on setup-and-test)
-  test-contrast-20:
+  test-resize:
     needs: setup-and-test
     runs-on: ubuntu-latest
     steps:
@@ -67,8 +107,8 @@ jobs:
           python-version: '3.10'
       - name: Install Python Dependencies
         run: pip install pillow numpy httpx
-      - name: Run Contrast 20 Test
-        run: python test/single_tests/test_contrast_20.py
+      - name: Run Resize Test
+        run: python test/single_tests/test_resized_image.py
 
   test-greyscale:
     needs: setup-and-test
@@ -81,9 +121,8 @@ jobs:
       - name: Install Python Dependencies
         run: pip install pillow numpy httpx
       - name: Run Greyscale Test
-        run: python test/single_tests/test_greyscale.py
+        run: python test/single_tests/test_greyscale_image.py
 
-  # Add more test jobs following the same pattern...
   test-negative:
     needs: setup-and-test
     runs-on: ubuntu-latest
@@ -94,5 +133,114 @@ jobs:
           python-version: '3.10'
       - name: Install Python Dependencies
         run: pip install pillow numpy httpx
-      - name: Run Negative Image Test
-        run: python test/single_tests/test_negative.py
+      - name: Run Negative Test
+        run: python test/single_tests/test_negative_image.py
+
+  test-contrast-20:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Contrast 20 Test
+        run: python test/single_tests/test_contrast_20.py
+  
+  test-rotate:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Rotate Test
+        run: python test/single_tests/test_rotated_image.py
+  
+  test-sharpen:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Sharpen Test
+        run: python test/single_tests/test_sharpened_image.py
+    
+  test-emboss:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Emboss Test
+        run: python test/single_tests/test_embossed_standard.py
+    
+  test-histogram-equalizotion:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Histogram Equalization Test
+        run: python test/single_tests/test_histogram_equalized.py
+    
+  test-flood-fill:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Flood Fill Test
+        run: python test/single_tests/test_flood_filled_input.py
+
+  test-canny-edge-detection:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Canny Edge Detection Test
+        run: python test/single_tests/test_canny_edge_detection.py
+
+  test-harris-corner-detection:
+    needs: setup-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Python Dependencies
+        run: pip install pillow numpy httpx
+      - name: Run Harris Corner Detection Test
+        run: python test/single_tests/test_harris_corners.py
+  
+      
+
+  
+  
