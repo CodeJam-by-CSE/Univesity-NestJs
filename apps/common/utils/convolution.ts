@@ -12,13 +12,19 @@ export function applyConvolution(
         for (let x = 0; x < width; x++) {
             for (let c = 0; c < channels; c++) {
                 const pixelIndex = (y * width + x) * channels + c;
+                let sum = 0;
 
-                let sum = imageData[pixelIndex];
+                for (let ky = -1; ky <= 1; ky++) {
+                    for (let kx = -1; kx <= 1; kx++) {
+                        const px = Math.min(Math.max(x + kx, 0), width - 1);
+                        const py = Math.min(Math.max(y + ky, 0), height - 1);
+                        const kernelValue = kernel[ky + 1][kx + 1];
+                        const sourceIndex = (py * width + px) * channels + c;
+                        sum += imageData[sourceIndex] * kernelValue;
+                    }
+                }
 
-                const kernelValue = kernel[1][1];
-                sum *= kernelValue;
-
-                result[pixelIndex] = Math.min(Math.max(sum * bias, 0), 255);
+                result[pixelIndex] = Math.min(Math.max(bias + sum, 0), 255);
             }
         }
     }
