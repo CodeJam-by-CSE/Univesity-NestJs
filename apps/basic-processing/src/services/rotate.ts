@@ -21,8 +21,8 @@ export class RotateService {
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const dx = x + centerX;
-        const dy = y + centerY;
+        const dx = x - centerX;
+        const dy = y - centerY;
 
         const rotatedX = Math.round(dx * Math.cos(radian) - dy * Math.sin(radian) + centerX);
         const rotatedY = Math.round(dx * Math.sin(radian) + dy * Math.cos(radian) + centerY);
