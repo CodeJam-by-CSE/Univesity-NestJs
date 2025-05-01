@@ -5,7 +5,7 @@ def main():
     try:
         score = compare_images("apps/cse40/expected_images/canny_edges.png", "apps/feature-detection/output_images/canny_edges.png")
         print("canny_edge_detection: {} marks".format(score))
-        if score < 95:
+        if score < 99.5:
             print("canny_edge_detection: Test failed, images are not similar enough.")
             sys.exit(1)
         else:
