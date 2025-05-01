@@ -5,7 +5,7 @@ def main():
     try:
         score = compare_images("apps/cse40/expected_images/emboss_image.png", "apps/basic-processing/output_images/emboss_image.png")
         print("embossed_standard: {} marks".format(score))
-        if score < 0.95:
+        if score < 95:
             print("embossed_standard: Test failed, images are not similar enough.")
             sys.exit(1)
         else:

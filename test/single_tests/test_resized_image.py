@@ -5,7 +5,7 @@ def main():
     try:
         score = compare_images("apps/cse40/expected_images/resized_image.png", "apps/basic-processing/output_images/resized_image.png")
         print("resized_image: {} marks".format(score))
-        if score < 0.95:
+        if score < 95:
             print("resized_image: Test failed, images are not similar enough.")
             sys.exit(1)
         else:

@@ -6,8 +6,54 @@ on:
       - '**'
 
 jobs:
-  setup-and-test:
-    name: Setup Environment and Test APIs
+  test-resize:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          mkdir -p apps/cse40/images
+          wget -O apps/cse40/images/input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Make API Call
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
+
+          curl --fail -X POST http://localhost:3000/basic-processing/resize \
+            -H "Content-Type: application/json" \
+            -d '{"imagePath": "apps/cse40/images/input_image.png", "width": 800, "height": 600}' || exit 1
+
+      - name: Run Resize Test
+        run: python test/single_tests/test_resized_image.py
+
+  test-greyscale:
     runs-on: ubuntu-latest
     services:
       redis:
@@ -35,218 +81,504 @@ jobs:
           npm install concurrently
           python -m pip install --upgrade pip
           pip install pillow numpy httpx
-      
+
       - name: Download input image
         run: |
           cd apps/cse40/images
-          wget -O input_image.png https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=bd2910ec-f548-4b2f-bfb6-2b5e05df230f 
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
 
-
-      - name: Start Services
+      - name: Start Services and Run Greyscale API
         run: |
-          npx concurrently "npm run start" "npm run start:basic-processing" "npm run start:enhancement" "npm run start:feature-detection" &
+          npx concurrently "npm run start" "npm run start:basic-processing" &
           echo "Waiting for services to start..."
           for i in {1..30}; do
-            nc -z localhost 3000 && nc -z localhost 4001 && nc -z localhost 4002 && nc -z localhost 4003 && break
-            echo "Waiting for ports 3000, 4001, 4002, and 4003..."
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
             sleep 1
           done
-
-          curl --fail -X POST http://localhost:3000/basic-processing/resize \
-            -H "Content-Type: application/json" \
-            -d '{"imagePath": "apps/cse40/images/input_image.png", "width": 800, "height": 600}' || exit 1
 
           curl --fail -X POST http://localhost:3000/basic-processing/greyscale \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
 
+          echo "✅ Greyscale API call successful"
+
+      - name: Run Greyscale Test
+        run: python test/single_tests/test_greyscale_image.py
+  
+  test-negative:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Negative API
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/basic-processing/negative \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
+
+          echo "✅ Negative API call successful"
+
+      - name: Run Negative Test
+        run: python test/single_tests/test_negative_image.py
+
+  test-contrast:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Contrast API
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
 
           curl --fail -X POST http://localhost:3000/basic-processing/contrast \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "contrast": 20}' || exit 1
 
+          echo "✅ Contrast API call successful"
+
+      - name: Run Contrast Test
+        run: python test/single_tests/test_contrast_20.py
+  
+  test-rotate:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Rotate API
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/basic-processing/rotate \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "angle": 90}' || exit 1
-          
+
+          echo "✅ Rotate API call successful"
+
+      - name: Run Rotate Test
+        run: python test/single_tests/test_rotated_image.py
+
+  test-sharpen:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Sharpen API
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/basic-processing/sharpen \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
-          
+
+          echo "✅ Sharpen API call successful"
+
+      - name: Run Sharpen Test
+        run: python test/single_tests/test_sharpened_image.py
+
+  test-emboss:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Emboss API
+        run: |
+          npx concurrently "npm run start" "npm run start:basic-processing" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4001 && break
+            echo "Waiting for ports 3000, 4001..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/basic-processing/emboss \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
-          
+
+          echo "✅ Emboss API call successful"
+
+      - name: Run Emboss Test
+        run: python test/single_tests/test_embossed_standard.py
+
+  test-histogram-equalization:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Histogram Equalization API
+        run: |
+          npx concurrently "npm run start" "npm run start:enhancement" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4002 && break
+            echo "Waiting for ports 3000, 4002..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/enhancement/histogram-equalization \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
-          
+
+          echo "✅ Histogram Equalization API call successful"
+
+      - name: Run Histogram Equalization Test
+        run: python test/single_tests/test_histogram_equalized.py
+
+  test-flood-fill:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Flood Fill API
+        run: |
+          npx concurrently "npm run start" "npm run start:enhancement" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 nc -z localhost 4002 && break
+            echo "Waiting for ports 3000, 4002..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/enhancement/flood_fill_image \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "sr": 400, "sc": 250, "newColor": "[255, 0, 0]"}' || exit 1
 
+          echo "✅ Flood Fill API call successful"
+
+      - name: Run Flood Fill Test
+        run: python test/single_tests/test_flood_filled_input.py
+  
+  test-canny-edge-detection:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Canny Edge Detection API
+        run: |
+          npx concurrently "npm run start" "npm run start:feature-detection" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4003 && break
+            echo "Waiting for ports 3000, 4003..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/feature-detection/canny-edge-detection \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
-          
+
+          echo "✅ Canny Edge Detection API call successful"
+
+      - name: Run Canny Edge Detection Test
+        run: python test/single_tests/test_canny_edge_detection.py
+  
+  test-harris-corner-detection:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install concurrently
+          python -m pip install --upgrade pip
+          pip install pillow numpy httpx
+
+      - name: Download input image
+        run: |
+          cd apps/cse40/images
+          wget -O input_image.png "https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2Finput_image.png?alt=media&token=${{ secrets.FIREBASE_STORAGE_TOKEN }}"
+
+      - name: Start Services and Run Harris Corner Detection API
+        run: |
+          npx concurrently "npm run start" "npm run start:feature-detection" &
+          echo "Waiting for services to start..."
+          for i in {1..30}; do
+            nc -z localhost 3000 && nc -z localhost 4003 && break
+            echo "Waiting for ports 3000, 4003..."
+            sleep 1
+          done
+
           curl --fail -X POST http://localhost:3000/feature-detection/harris-corner-detection \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "k": 0.04, "windowSize": "3", "thresh": 0.00001}' || exit 1
-          
-          echo "✅ Services up and test input accepted"
 
-      - name: Cache Services Log File
-        if: always()
-        run: sleep 5
+          echo "✅ Harris Corner Detection API call successful"
 
-  # Individual Test Jobs (depend on setup-and-test)
-  test-resize:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Resize Test
-        run: python test/single_tests/test_resized_image.py
-
-  test-greyscale:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Greyscale Test
-        run: python test/single_tests/test_greyscale_image.py
-
-  test-negative:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Negative Test
-        run: python test/single_tests/test_negative_image.py
-
-  test-contrast-20:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Contrast 20 Test
-        run: python test/single_tests/test_contrast_20.py
-  
-  test-rotate:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Rotate Test
-        run: python test/single_tests/test_rotated_image.py
-  
-  test-sharpen:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Sharpen Test
-        run: python test/single_tests/test_sharpened_image.py
-    
-  test-emboss:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Emboss Test
-        run: python test/single_tests/test_embossed_standard.py
-    
-  test-histogram-equalizotion:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Histogram Equalization Test
-        run: python test/single_tests/test_histogram_equalized.py
-    
-  test-flood-fill:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Flood Fill Test
-        run: python test/single_tests/test_flood_filled_input.py
-
-  test-canny-edge-detection:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
-      - name: Run Canny Edge Detection Test
-        run: python test/single_tests/test_canny_edge_detection.py
-
-  test-harris-corner-detection:
-    needs: setup-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Python Dependencies
-        run: pip install pillow numpy httpx
       - name: Run Harris Corner Detection Test
         run: python test/single_tests/test_harris_corners.py
-  
-      
-
-  
-  

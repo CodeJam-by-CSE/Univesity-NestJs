@@ -8,7 +8,7 @@ def main():
             "apps/basic-processing/output_images/sharpened_image.png"
         )
         print("sharpened_image: {} marks".format(score))
-        if score < 0.95:
+        if score < 95:
             print("sharpened_image: Test failed, images are not similar enough.")
             sys.exit(1)
         else:
