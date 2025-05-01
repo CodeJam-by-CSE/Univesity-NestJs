@@ -1,29 +1,31 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="https://cse40.cse.uom.lk/codejam" target="blank"><img src="https://firebasestorage.googleapis.com/v0/b/profile-image-1c78a.appspot.com/o/codejam%2FCodeJameLogo.webp?alt=media&token=507a7f7b-e735-4952-ad04-d0a8f48a8f55" width="350" alt="CodeJam Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Introduction
 
-## Description
+Professor Roshan Thennakoon from the University of Moratuwa created this challenge for his CS4051 Image Processing students. While many excel at theory, he noticed they struggle with identifying subtle bugs in real-world code. This NestJS application implements core image processing algorithms that are divided into three sections.
+1. Basic Processing Algorithms
+    - Greyscale
+    - Negative
+    - Resize
+    - Rotate
+    - Sharpen
+    - Contrast
+    - Emboss
+2. Image Enhancement Algorithms
+    - Flood-fill
+    - Histogram equalization
+3. Feature Detection Algorithms
+    - Canny Edge Detection
+    - Harris Corner Detection
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This code contains deliberately planted logical errors that produce visual anomalies without causing compilation failures.
+
+## Your Mission
+
+Your task is to find and fix all logical bugs in the codebase, document what was wrong with each implementation, and demonstrate how your fixes improve the output images. Success requires not just coding skills, but a deep understanding of image processing fundamentals and the ability to trace algorithm execution when results don't match expectations.
 
 ## Project setup
 
@@ -31,7 +33,7 @@
 $ npm install
 ```
 
-## Compile and run the project
+## Run all the services given below
 
 ```bash
 # run main service
@@ -45,31 +47,4 @@ $ npm run start:enhancement
 
 # run feature-detection service
 $ npm run start:feature-detection
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Stay in touch
-
-- Author 01 - [H.W.K.Aravinda](https://github.com/Aravinda-HWK)
-- Author 02 - [Suraja Hasarinda](https://github.com/SurajaHasarinda)
-- Author 03 - [Rashmika Rathnayaka](https://github.com/rashG1)
-- Author 04 - [Sithum-Bimsara](https://github.com/Sithum-Bimsara)
-- Author 05 - [Chanuka Chandra Yapa](https://github.com/Chanuka-Chandrayapa)
