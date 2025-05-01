@@ -22,4 +22,4 @@ def compare_images(expected_path, generated_path):
     
     # Calculate score
     score = (correct_pixels / total_pixels) * 100
-    return round(score)
+    return score
