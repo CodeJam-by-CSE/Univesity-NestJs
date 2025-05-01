@@ -38,11 +38,11 @@ jobs:
 
       - name: Start Services
         run: |
-          npx concurrently "npm run start" "npm run start:basic-processing" &
+          npx concurrently "npm run start" "npm run start:basic-processing" "npm run start:enhancement" "npm run start:feature-detection" &
           echo "Waiting for services to start..."
           for i in {1..30}; do
-            nc -z localhost 3000 && nc -z localhost 4001 && break
-            echo "Waiting for ports 3000 and 4001..."
+            nc -z localhost 3000 && nc -z localhost 4001 && nc -z localhost 4002 && nc -z localhost 4003 && break
+            echo "Waiting for ports 3000, 4001, 4002, and 4003..."
             sleep 1
           done
 
