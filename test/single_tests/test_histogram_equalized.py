@@ -8,7 +8,7 @@ def main():
             "apps/enhancement/output_images/histogram_equalized.png"
         )
         print("histogram_equalized: {} marks".format(score))
-        if score < 0.95:
+        if score < 95:
             print("histogram_equalized: Test failed, images are not similar enough.")
             sys.exit(1)
         else:

@@ -5,7 +5,7 @@ def main():
     try:
         score = compare_images("apps/cse40/expected_images/flood_filled_input_image.png", "apps/enhancement/output_images/flood_filled_input_image.png")
         print("flood_filled_input: {} marks".format(score))
-        if score < 0.95:
+        if score < 95:
             print("flood_filled_input: Test failed, images are not similar enough.")
             sys.exit(1)
         else:
