@@ -463,7 +463,7 @@ jobs:
           npx concurrently "npm run start" "npm run start:enhancement" &
           echo "Waiting for services to start..."
           for i in {1..30}; do
-            nc -z localhost 3000 nc -z localhost 4002 && break
+            nc -z localhost 3000 && nc -z localhost 4002 && break
             echo "Waiting for ports 3000, 4002..."
             sleep 1
           done
