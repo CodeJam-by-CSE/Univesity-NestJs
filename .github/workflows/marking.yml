@@ -74,19 +74,19 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
           
-          curl --fail -X POST http://localhost:3000/basic-processing/histogram-equalization \
+          curl --fail -X POST http://localhost:3000/enhancement/histogram-equalization \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
           
-          curl --fail -X POST http://localhost:3000/basic-processing/flood_fill_image \
+          curl --fail -X POST http://localhost:3000/enhancement/flood_fill_image \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "sr": 400, "sc": 250, "newColor": "[255, 0, 0]"}' || exit 1
 
-          curl --fail -X POST http://localhost:3000/basic-processing/canny-edge-detection \
+          curl --fail -X POST http://localhost:3000/feature-detection/canny-edge-detection \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png"}' || exit 1
           
-          curl --fail -X POST http://localhost:3000/basic-processing/harris-corner-detection \
+          curl --fail -X POST http://localhost:3000/feature-detection/harris-corner-detection \
             -H "Content-Type: application/json" \
             -d '{"imagePath": "apps/cse40/images/input_image.png", "k": 0.04, "windowSize": "3", "thresh": 0.00001}' || exit 1
           
