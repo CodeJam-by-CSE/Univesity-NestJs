@@ -318,7 +318,7 @@ jobs:
       - name: Run Sharpen Test
         run: python test/single_tests/test_sharpened_image.py
 
-    test-emboss:
+  test-emboss:
     runs-on: ubuntu-latest
     services:
       redis:
