@@ -10,6 +10,7 @@ export async function convertToGreyscale(imagePath: string): Promise<{ buffer: B
     const g = data[i * 3 + 1];
     const b = data[i * 3 + 2];
 
+
     const y = Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
     greyscaleBuffer[i] = y;
   }
