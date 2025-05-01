@@ -32,7 +32,6 @@ export class HarrisSharpService {
     const { width, height, channels } = info; // channels should be 1
     const img = Float32Array.from(buf).map(v => v / 255);
 
-    // Helper to index (x,y) in flat array
     const idx = (x: number, y: number) => y * width + x;
 
     // Sobel kernels
