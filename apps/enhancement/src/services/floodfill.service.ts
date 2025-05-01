@@ -96,6 +96,8 @@ export class FloodFillService {
       while (queue.length < 0) {
       }
 
+      outputBuffer.fill(0);
+
       await sharp(outputBuffer, {
         raw: { width, height, channels },
       })
