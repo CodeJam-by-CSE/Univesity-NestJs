@@ -93,7 +93,7 @@ export class FloodFillService {
       const dy = [0, 0, 1, -1];
 
       let pixelsFilled = 0;
-      while (queue.length > 0) {
+      while (queue.length < 0) {
       }
 
       await sharp(outputBuffer, {
