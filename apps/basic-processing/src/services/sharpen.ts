@@ -6,7 +6,6 @@ import * as path from 'path';
 
 @Injectable()
 export class SharpenService {
-  // Do not change the this kernel
   private readonly strongKernel = [
     [-1, -1, -1],
     [-1, 9, -1],
