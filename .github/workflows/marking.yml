@@ -105,7 +105,7 @@ jobs:
 
       - name: Run Greyscale Test
         run: python test/single_tests/test_greyscale_image.py
-  
+
   test-negative:
     runs-on: ubuntu-latest
     services:
@@ -211,7 +211,7 @@ jobs:
 
       - name: Run Contrast Test
         run: python test/single_tests/test_contrast_20.py
-  
+
   test-rotate:
     runs-on: ubuntu-latest
     services:
@@ -463,7 +463,7 @@ jobs:
           npx concurrently "npm run start" "npm run start:enhancement" &
           echo "Waiting for services to start..."
           for i in {1..30}; do
-            nc -z localhost 3000 nc && -z localhost 4002 && break
+            nc -z localhost 3000 && nc -z localhost 4002 && break
             echo "Waiting for ports 3000, 4002..."
             sleep 1
           done
@@ -476,7 +476,7 @@ jobs:
 
       - name: Run Flood Fill Test
         run: python test/single_tests/test_flood_filled_input.py
-  
+
   test-canny-edge-detection:
     runs-on: ubuntu-latest
     services:
@@ -529,7 +529,7 @@ jobs:
 
       - name: Run Canny Edge Detection Test
         run: python test/single_tests/test_canny_edge_detection.py
-  
+
   test-harris-corner-detection:
     runs-on: ubuntu-latest
     services:

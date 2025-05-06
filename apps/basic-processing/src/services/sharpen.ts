@@ -6,7 +6,6 @@ import * as path from 'path';
 
 @Injectable()
 export class SharpenService {
-  // Do not change the this kernel
   private readonly strongKernel = [
     [-1, -1, -1],
     [-1, 9, -1],
@@ -30,6 +29,11 @@ export class SharpenService {
 
           for (let ky = -offset; ky <= offset; ky++) {
             for (let kx = -offset; kx <= offset; kx++) {
+              const px = Math.min(Math.max(x + kx, 0), width - 1);
+              const py = Math.min(Math.max(y + ky, 0), height - 1);
+              const kernelValue = this.strongKernel[ky + offset][kx + offset];
+              const sourceIndex = (py * width + px) * channels + c;
+              sum += imageData[sourceIndex] * kernelValue;
             }
           }
 

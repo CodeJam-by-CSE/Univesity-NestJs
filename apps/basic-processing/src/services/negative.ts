@@ -9,7 +9,11 @@ import * as path from 'path';
 @Injectable()
 export class NegativeService {
   // Kernel for negative effect
-  private readonly kernel = [];
+  private readonly kernel = [
+    [-1, 0, 0],
+    [0, -1, 0],
+    [0, 0, -1]
+  ];
 
   @MessagePattern({ cmd: 'create_negative' })
   async createNegative(imagePath: string) {
@@ -29,17 +33,18 @@ export class NegativeService {
       const image = sharp(imagePath);
       const metadata = await image.metadata();
       const { width, height } = metadata;
-      let channels;
+      const channels = 3;
 
       const rawData = await image.raw().toBuffer();
 
-      const negativeBuffer = applyConvolution(rawData, width!, height!, channels, this.kernel.toSorted());
+      const negativeBuffer = applyConvolution(rawData, width!, height!, channels, this.kernel);
 
+      // Save the negative image
       await sharp(negativeBuffer, {
         raw: {
           width: width!,
           height: height!,
-          channels: 2
+          channels: channels
         }
       })
         .png()
