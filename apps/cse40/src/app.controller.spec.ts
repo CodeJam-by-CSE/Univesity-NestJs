@@ -1,16 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { BasicProcessingController, EnhancementController, FeatureDetectionController } from './app.controller';
 import { AppService } from './app.service';
 
 describe('AppController', () => {
-  let appController: AppController;
+  let basicProcessingController: BasicProcessingController;
+  let enhancementController: EnhancementController;
+  let featureDetectionController: FeatureDetectionController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
+      controllers: [BasicProcessingController, EnhancementController, FeatureDetectionController],
       providers: [AppService],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    basicProcessingController = app.get<BasicProcessingController>(BasicProcessingController);
+    enhancementController = app.get<EnhancementController>(EnhancementController);
+    featureDetectionController = app.get<FeatureDetectionController>(FeatureDetectionController);
   });
 });

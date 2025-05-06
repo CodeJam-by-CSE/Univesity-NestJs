@@ -48,3 +48,5 @@ $ npm run start:enhancement
 # run feature-detection service
 $ npm run start:feature-detection
 ```
+
+### Access the swagger API Documentation `http://localhost:3000/api`
